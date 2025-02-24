@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
     <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
     <header>
         <div class="logo">
@@ -13,34 +15,42 @@
             <h2 class="nombre-colegio">Panel de Administración</h2>
         </div>
         <nav>
-            <a href="inicio.html" class="nav-link">Inicio</a>
-            <a href="#" class="nav-link">Usuarios</a>
-            <a href="#" class="nav-link">Notas</a>
-            <a href="#" class="nav-link">Reportes</a>
             <a href="#" class="nav-link">Cerrar Sesión</a>
         </nav>
     </header>
-    
-    <!-- Dashboard -->
-    <main class="dashboard">
-        <h1>Bienvenido, Administrador</h1>
-        <div class="cards">
-            <div class="card">
-                <h3>Gestión de Usuarios</h3>
-                <p>Administrar alumnos y profesores.</p>
-                <a href="#" class="btn">Ir a Usuarios</a>
-            </div>
-            <div class="card">
-                <h3>Carga de Notas</h3>
-                <p>Registrar y modificar calificaciones.</p>
-                <a href="#" class="btn">Ir a Notas</a>
-            </div>
-            <div class="card">
-                <h3>Reportes</h3>
-                <p>Ver informes y estadísticas.</p>
-                <a href="#" class="btn">Ir a Reportes</a>
-            </div>
+    <section class="user-management">
+        <h1>Gestión de Usuarios</h1>
+
+        <!-- Formulario para agregar usuarios -->
+        <div class="add-user-form">
+            <h3>Agregar Nuevo Usuario</h3>
+            <input type="text" id="newUserNombre" placeholder="Nombre">
+            <input type="text" id="newUserApellido" placeholder="Apellido">
+            <input type="email" id="newUserEmail" placeholder="Correo Electrónico">
+            <button onclick="agregarUsuario()">Agregar Usuario</button>
         </div>
+
+        <!-- Tabla de usuarios -->
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo Electrónico</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- Carga de usuarios -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button onclick="eliminarUsuario(this)">Eliminar</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
     </main>
     <footer class="footer">
         <div class="footer-content container">
@@ -56,4 +66,5 @@
         </div>
     </footer>
 </body>
+
 </html>
