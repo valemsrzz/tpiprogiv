@@ -11,7 +11,7 @@ body {
 }
 
 
-h1, .descr {
+h1 {
     text-align: center;
     margin-top: 50px;
 }
@@ -50,6 +50,30 @@ color: #b43232;
 
  h2{
     text-align: left;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    gap: 15px;
+    justify-content: center;
+}
+
+.user-info input[type="text"] {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+}
+
+.user-info select {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100px;
 }
 
 /* Sección de boletín y tabla de calificaciones */

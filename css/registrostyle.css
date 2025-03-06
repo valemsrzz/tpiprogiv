@@ -21,7 +21,7 @@ form {
     background:#121111;
     padding: 50px;
     width: 420px;
-    height: 820px;
+    height: 900px;
     text-align: center;
     box-shadow: 0 0 20px rgba(31, 31, 31);
     border-radius: 20px;
@@ -77,6 +77,17 @@ form img {
     outline: none;
     color: #fcfef7;
     appearance: none;
+}
+
+select option {
+    background-color: #3a0707;
+    color: #fcfef7;
+    border: none;
+}
+
+select option :checked {
+    background-color: #3a0707;
+    color: #fcfef7;
 }
 
 ::placeholder{
