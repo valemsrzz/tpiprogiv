@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear una Cuenta</title>
-    <link rel="stylesheet" href="css/registrostyle.css">
+    <link rel="stylesheet" href="registrostyle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@400;500;700;800&display=swap');
     </style>
 </head>
 <body>
-    
-    <form class="form-container" action="usuarios.php" method="post">
-        <img src="css/img/logoguevara.png" alt="">
+    <form class="form-container" id="registerForm">
+        <img src="img/logoguevara.png" alt="">
         <div class="input-group">
             <div class="input-container">
                 <label for="nombre"class="visually-hidden">Nombre Apellido:</label>
@@ -50,19 +49,23 @@
                 <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña">
                 <i class="fa-solid fa-lock"></i>
             </div>
+            <!-- Add id to select element -->
             <div class="input-container">
-                <select>
+                <select id="curso" name="curso">
                     <option value="" disabled selected>Seleccione Curso</option>
                     <option value="7mo 1ra">7mo 1ra</option>
                     <option value="7mo 2da">7mo 2da</option>
                     <option value="7mo 3ra">7mo 3ra</option>
                 </select>
-    
             </div>
-            <input class="btn"type="submit"value="Enviar">
+            
+            <!-- Change input type="submit" to button for better control -->
+            <div class="input-container">
+                <button type="submit" class="btn" id="submitBtn">Registrarse</button>
+            </div>
         </div>
-
     </form>
-    <script src="registro.js" defer></script>
-</body>
+    <script src="js/registro.js" defer></script>
+
+</body> 
 </html>
