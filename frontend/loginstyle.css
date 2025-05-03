@@ -40,11 +40,11 @@ form img {
 
 .input-container {
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
 }
 
-.input-container > input, .input-container select{
-    padding: 20px 15px 20px 15px;
+.input-container input {
+    padding: 20px 15px 20px 45px;
     width: 100%;
     border-radius: 35px;
     background-color: transparent;
@@ -52,7 +52,15 @@ form img {
     font-size: 17px;
     outline: none;
     color: #fcfef7;
-    appearance: none;
+}
+
+.input-container i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fcfef7;
+    font-size: 17px;
 }
 
 ::placeholder{
@@ -72,9 +80,16 @@ form img {
 }
 
 .btn:hover {
-    color: #121111;
+    background: linear-gradient(135deg, #961f1f, #7a1919);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 .link {
     font-size: 16px;
     margin-top: 15px;

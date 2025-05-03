@@ -11,9 +11,8 @@
     </style>
 </head>
 <body>
-    
-    <form class="form-container" action="usuarios.php" method="post">
-        <img src="logoguevara.png" alt="">
+    <form class="form-container" id="registerForm">
+        <img src="img/logoguevara.png" alt="">
         <div class="input-group">
             <div class="input-container">
                 <label for="nombre"class="visually-hidden">Nombre Apellido:</label>
@@ -40,7 +39,7 @@
             </div>
 
             <div class="input-container">
-                <label for="Usuario" class="visually-hidden">Nombre de usuario:</label>
+                <label for="usuario" class="visually-hidden">Nombre de usuario:</label>
                 <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario">
                 <i class="fa-solid fa-user"></i>
             </div>
@@ -50,9 +49,23 @@
                 <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña">
                 <i class="fa-solid fa-lock"></i>
             </div>
-            <input class="btn"type="submit"value="Enviar">
+            <!-- Add id to select element -->
+            <div class="input-container">
+                <select id="curso" name="curso">
+                    <option value="" disabled selected>Seleccione Curso</option>
+                    <option value="7mo 1ra">7mo 1ra</option>
+                    <option value="7mo 2da">7mo 2da</option>
+                    <option value="7mo 3ra">7mo 3ra</option>
+                </select>
+            </div>
+            
+            <!-- Change input type="submit" to button for better control -->
+            <div class="input-container">
+                <button type="submit" class="btn" id="submitBtn">Registrarse</button>
+            </div>
         </div>
     </form>
-    <script src="registro.js" defer></script>
-</body>
+    <script src="js/registro.js" defer></script>
+
+</body> 
 </html>
