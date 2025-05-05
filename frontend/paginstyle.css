@@ -37,8 +37,42 @@ body {
     right: 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+    padding: 20px 20px;
+}
 
+.navbar {
+    margin-left: auto;
+    transform: translateX(300px);
+}
+
+.navbar ul {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+.menu .navbar ul li a {
+    padding: 8px 5px;  
+    font-size: 16px;
+}
+
+.menu .navbar ul li:last-child {
+    margin-right: 100px;  
+}
+
+
+.logo {
+    position: absolute;
+    left: 3px;
+    right: 100px;
+    display: flex;
+    align-items: right;
+}
+
+
+.menu .navbar ul li a {
+    padding: 15px 8px;
 }
 
 .menu .navbar ul li {
@@ -340,17 +374,50 @@ link h3{
         
 }
 
+/* Estilos para el botón de logout */
 .logout-btn {
-    color: #ffffff;
-    background-color: #961f1f;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
+    font-size: 18px;
+    padding: 20px;
+    color: #fffdfc;
+    display: block;
+    font-weight: 600;
+    position: relative;
+    float: left;
 }
 
-.logout-btn:hover {
-    background-color: #7a1919;
-    transform: translateY(-2px);
+.menu .navbar ul li a, 
+.menu .navbar ul li .logout-btn {
+    font-size: 18px;
+    padding: 20px;
+    color: #fffdfc;
+    display: block;
+    font-weight: 600;
+}
+
+.menu .navbar ul li a:hover,
+.menu .navbar ul li .logout-btn:hover {
+    color: #b43232;
+}
+
+/* Ajuste responsive para el botón */
+@media (max-width: 991px) {
+    .logout-btn {
+        width: 100%;
+        text-align: left;
+        padding: 20px;
+    }
+}
+
+.navbar ul li {
+    list-style: none;
+}
+
+/* Make sure the logout button aligns with other nav items */
+.navbar ul li a, .navbar ul a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .logo {

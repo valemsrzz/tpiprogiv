@@ -19,7 +19,7 @@ form {
     background: #121111;
     padding: 50px;
     width: 420px;
-    height: 900px;
+    height: 950px;
     text-align: center;
     box-shadow: 0 0 20px rgba(31, 31, 31);
     border-radius: 20px;
@@ -149,6 +149,25 @@ select option :checked {
 .notification.fade-out {
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+.link {
+    font-size: 16px;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #fcfef7;
+}
+
+.link a {
+    color: #fcfef7;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link a:hover {
+    color: rgb(150, 31, 31);
 }
 
 @keyframes slideIn {

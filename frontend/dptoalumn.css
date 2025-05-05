@@ -26,7 +26,40 @@ header {
     font-size: 75%;
 }
 
-a {
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 15px;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fbfafa;
+    font-size: 125%;
+    font-weight: 600;
+    padding: 8px 10px;
+}
+
+nav a:hover {
+    color: #b43232;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 5rem;
+    margin-right: 5%;
+}
+
+ a {
     text-decoration: none;
     color: #fbfafa;
     font-size: 125%;
