@@ -1,3 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const { login, register } = require('../controllers/authController');
+
+router.post('/login', login);
+router.post('/register', register);
+
 const authMiddleware = (req, res, next) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'No autorizado' });
@@ -15,5 +22,6 @@ const adminMiddleware = (req, res, next) => {
 
 module.exports = {
     authMiddleware,
-    adminMiddleware
+    adminMiddleware,
+    router
 };

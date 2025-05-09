@@ -18,4 +18,4 @@ router.get('/student/:id', authMiddleware, async (req, res) => {
 
 // Add more grade-related routes here...
 
-module.exports = router;  // Make sure this line exists
+module.exports = router;

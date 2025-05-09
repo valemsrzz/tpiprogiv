@@ -163,3 +163,64 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPendingUsers();
     loadAllUsers();
 });
+
+
+// Add these new functions for handling pending users
+async function cargarUsuariosPendientes() {
+    try {
+        const response = await fetch('http://localhost:3000/api/admin/pending-users', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        const usuarios = await response.json();
+        mostrarUsuariosPendientes(usuarios);
+    } catch (error) {
+        console.error('Error al cargar usuarios pendientes:', error);
+    }
+}
+
+function mostrarUsuariosPendientes(usuarios) {
+    const tbody = document.querySelector('#tablaPendientes tbody');
+    tbody.innerHTML = '';
+
+    usuarios.forEach(usuario => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${usuario.apellido}, ${usuario.nombre}</td>
+            <td>${usuario.email}</td>
+            <td>${usuario.username}</td>
+            <td>
+                <button onclick="aprobarUsuario(${usuario.id})" class="btn-aprobar">Aprobar</button>
+                <button onclick="rechazarUsuario(${usuario.id})" class="btn-rechazar">Rechazar</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function aprobarUsuario(userId) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/admin/approve-user/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        if (response.ok) {
+            alert('Usuario aprobado exitosamente');
+            // Recargar ambas tablas
+            cargarUsuariosPendientes();
+            cargarUsuarios(); // Asumiendo que ya tienes esta función para usuarios activos
+        }
+    } catch (error) {
+        console.error('Error al aprobar usuario:', error);
+        alert('Error al aprobar usuario');
+    }
+}
+
+// Add this to your DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    cargarUsuariosPendientes();
+});

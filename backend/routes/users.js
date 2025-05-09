@@ -2,8 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const { adminMiddleware, authMiddleware } = require('./auth');
 const bcrypt = require('bcrypt');
+const { adminMiddleware } = require('./auth');
+const { register } = require('../controllers/authController'); // Ruta corregida según tu estructura
 
 // Obtener todos los usuarios (solo admin)
 router.get('/', adminMiddleware, async (req, res) => {
@@ -45,7 +46,7 @@ router.post('/approve/:id', adminMiddleware, async (req, res) => {
     }
 });
 
-// Crear usuario desde panel admin
+// Crear usuario desde panel admin (activo por defecto)
 router.post('/create/admin', adminMiddleware, async (req, res) => {
     const { nombre, apellido, dni, email, telefono, username, password, rol } = req.body;
     try {
@@ -61,39 +62,8 @@ router.post('/create/admin', adminMiddleware, async (req, res) => {
     }
 });
 
-// Registro público de usuarios
-router.post('/create', async (req, res) => {
-    const { nombre, email, telefono, dni, username, password, id_curso } = req.body;
-
-    // Validación de campos requeridos
-    if (!nombre || !dni || !email || !telefono || !username || !password || !id_curso) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios' });
-    }
-
-    try {
-        // Obtener ID del curso desde el nombre
-        const [courseResult] = await db.promise().query('SELECT id FROM cursos WHERE nombre = ?', [id_curso]);
-        if (courseResult.length === 0) {
-            return res.status(400).json({ error: 'Curso no válido' });
-        }
-
-        const courseId = courseResult[0].id;
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Insertar nuevo usuario
-        const query = `
-            INSERT INTO usuarios (nombre, dni, email, telefono, username, password, id_curso, rol, estado)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 'alumno', 'pendiente')
-        `;
-        await db.promise().query(query, [
-            nombre, dni, email, telefono, username, hashedPassword, courseId
-        ]);
-        res.json({ success: true });
-    } catch (err) {
-        console.error('Error:', err);
-        res.status(500).json({ error: 'Error al crear usuario' });
-    }
-});
+// Registro público de usuarios (estado: pendiente)
+router.post('/create', register);
 
 // Eliminar usuario (solo admin)
 router.delete('/:id', adminMiddleware, async (req, res) => {

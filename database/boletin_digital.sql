@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-04-2025 a las 01:06:36
+-- Tiempo de generación: 08-05-2025 a las 00:49:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -31,9 +31,12 @@ CREATE TABLE `calificaciones` (
   `id` int(11) NOT NULL,
   `id_alumno` int(11) NOT NULL,
   `id_materia` int(11) NOT NULL,
-  `nota` tinyint(4) DEFAULT NULL,
-  `periodo` int(11) NOT NULL,
-  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp()
+  `primer_informe1` int(2) DEFAULT NULL,
+  `primer_informe2` int(2) DEFAULT NULL,
+  `primer_final` int(2) DEFAULT NULL,
+  `segundo_informe1` int(2) DEFAULT NULL,
+  `segundo_informe2` int(2) DEFAULT NULL,
+  `segundo_final` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -44,18 +47,17 @@ CREATE TABLE `calificaciones` (
 
 CREATE TABLE `cursos` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(20) NOT NULL,
-  `descripcion` varchar(100) DEFAULT NULL
+  `nombre` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cursos`
 --
 
-INSERT INTO `cursos` (`id`, `nombre`, `descripcion`) VALUES
-(1, '7mo 1ra', 'Séptimo Primera División'),
-(2, '7mo 2da', 'Séptimo Segunda División'),
-(3, '7mo 3ra', 'Séptimo Tercera División');
+INSERT INTO `cursos` (`id`, `nombre`) VALUES
+(1, '7mo 1ra'),
+(2, '7mo 2da'),
+(3, '7mo 3ra');
 
 -- --------------------------------------------------------
 
@@ -112,7 +114,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `username`, `password`, `rol`, `estado`, `id_curso`, `created_at`) VALUES
-(1, 'Admin', 'System', '00000000', NULL, 'admin@school.com', 'admin', '$2b$10$XgXHkQ9ZH1Q9Z9X9Z9X9Z.XgXHkQ9ZH1Q9Z9X9Z9Z9X9Z9X9Z9', 'admin', 'activo', NULL, '2025-04-26 23:00:36');
+(9, 'Admin', 'Principal', '12345678', '123456789', 'admin@admin.com', 'admin', '$2b$10$k4pMvMdio2EAYmwq2cckWe/1V8jB5GbLAwvTLjGLGMq7K36Tt.kG2', 'admin', 'activo', NULL, '2025-04-30 20:04:22');
 
 --
 -- Índices para tablas volcadas
@@ -123,7 +125,7 @@ INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `dni`, `telefono`, `email`, 
 --
 ALTER TABLE `calificaciones`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_calificacion` (`id_alumno`,`id_materia`,`periodo`),
+  ADD UNIQUE KEY `alumno_materia` (`id_alumno`,`id_materia`),
   ADD KEY `id_materia` (`id_materia`);
 
 --
@@ -175,7 +177,7 @@ ALTER TABLE `materias`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Restricciones para tablas volcadas
