@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear una Cuenta</title>
+    <link rel="stylesheet" href="registrostyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@400;500;700;800&display=swap');
+    </style>
+</head>
+<body>
+    <form class="form-container" id="registerForm">
+        <img src="img/logoguevara.png" alt="">
+        <div class="input-group">
+            <div class="input-container">
+                <label for="nombre"class="visually-hidden">Nombre Apellido:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre Apellido">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="input-container">
+                <label for="correo"class="visually-hidden">Correo Electrónico:</label>
+                <input type="email" id="correo" name="correo" placeholder="Correo Electrónico">
+                <i class="fa-solid fa-envelope"></i>
+            </div>            
+
+            <div class="input-container">
+                <label for="telefono"class="visually-hidden">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Teléfono">
+                <i class="fa-solid fa-phone"></i>
+            </div>
+
+            <div class="input-container">
+                <label for="DNI" class="visually-hidden">DNI:</label>
+                <input type="number" id="DNI" name="DNI" placeholder="DNI">
+                <i class="fa-solid fa-pen"></i>
+            </div>
+
+            <div class="input-container">
+                <label for="usuario" class="visually-hidden">Nombre de usuario:</label>
+                <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="input-container">
+                <label for="contraseña" class="visually-hidden">Contraseña:</label>
+                <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <!-- Add id to select element -->
+            <div class="input-container">
+                <select id="curso" name="curso">
+                    <option value="" disabled selected>Seleccione Curso</option>
+                    <option value="7mo 1ra">7mo 1ra</option>
+                    <option value="7mo 2da">7mo 2da</option>
+                    <option value="7mo 3ra">7mo 3ra</option>
+                </select>
+            </div>
+            
+            <!-- Change input type="submit" to button for better control -->
+            <div class="input-container">
+                <button type="submit" class="btn" id="submitBtn">Registrarse</button>
+            </div>
+        </div>
+        <div class="link">
+            <a href="login.html">Ya tengo una cuenta</a>
+          </div>
+    </form>
+    <script src="js/registro.js" defer></script>
+
+</body> 
+</html>

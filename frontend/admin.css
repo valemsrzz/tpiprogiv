@@ -1,0 +1,340 @@
+/* Mantener los estilos base */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+body {
+    background: linear-gradient(150deg, #961f1f, #262626);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* Estilos de encabezado */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, rgb(36, 35, 35)0%, rgb(26, 25, 25)100%);
+    color: white;
+    padding: 5px;
+    font-size: 75%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 5rem;
+    margin-right: 5%;
+}
+
+/* Estilos de navegación */
+a {
+    text-decoration: none;
+    color: #fbfafa;
+    font-size: 125%;
+    font-weight: 600;
+    padding-right: 1rem;
+}
+
+nav a:hover {
+    color: #b43232;
+}
+
+/* Estilos de contenido principal */
+.user-management {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 35px;
+    margin-bottom: 15px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+/* Formulario de usuario */
+.add-user-form {
+    width: 50%;
+    margin: 20px auto;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.add-user-form input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.add-user-form button {
+    background: #121212;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.add-user-form button:hover {
+    background-color: #b91818;
+}
+
+.add-user-form select {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.add-user-form select:focus {
+    outline: none;
+    border-color: #666;
+}
+
+/* Estilos compartidos de tablas */
+.user-table, .pending-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.user-table th, 
+.user-table td,
+.pending-table th,
+.pending-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    color: #000000; /* Añadido: color negro para el texto */
+}
+
+.user-table th,
+.pending-table th {
+    background-color: #2c2c2c;
+    color: white;
+    font-weight: bold;
+}
+
+/* Contenedores de tablas */
+.user-list,
+.pending-users {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.user-list h3,
+.pending-users h3 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-accept,
+.btn-decline,
+.user-table button {
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-accept {
+    background-color: #28a745;
+}
+
+.btn-decline,
+.user-table button {
+    background-color: #dc3545;
+}
+
+.btn-accept:hover,
+.btn-decline:hover,
+.user-table button:hover {
+    opacity: 0.9;
+}
+
+/* Footer */
+.footer {
+    padding: 50px 0;
+    background: linear-gradient(90deg, rgb(36, 35, 35)0%, rgb(26, 25, 25)100%);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.link ul li a {
+    font-size: 16px;
+    color: #c5c5c5;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.footer-content h1 {
+    font-size: 30px;
+    color: #c5c5c5;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.logout-btn {
+    color: #ffffff;
+    background-color: #961f1f;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #7a1919;
+    transform: translateY(-2px);
+}
+
+/* Estilos responsivos */
+@media screen and (max-width: 1200px) {
+    .user-management {
+        padding: 15px;
+    }
+
+    .user-list,
+    .pending-users {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .add-user-form {
+        width: 70%;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    nav {
+        width: 100%;
+        text-align: center;
+    }
+
+    nav a {
+        font-size: 100%;
+        padding: 8px;
+    }
+
+    .add-user-form {
+        width: 90%;
+    }
+
+    .add-user-form input,
+    .add-user-form select {
+        width: 90%;
+    }
+
+    .user-list,
+    .pending-users {
+        width: 100%;
+        padding: 15px;
+        overflow-x: auto;
+    }
+
+    .user-table,
+    .pending-table {
+        font-size: 14px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .btn-accept,
+    .btn-decline,
+    .user-table button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .logo img {
+        height: 4rem;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .add-user-form {
+        padding: 10px;
+    }
+
+    .user-table th, 
+    .user-table td,
+    .pending-table th,
+    .pending-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .link ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

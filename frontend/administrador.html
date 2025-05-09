@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="img/logoguevara.png" alt="logo del colegio">
+            <h2 class="nombre-colegio">Panel de Administración</h2>
+        </div>
+        <nav>
+            <a href="/api/auth/logout" class="nav-link logout-btn" onclick="handleLogout(event)">Cerrar Sesión</a>
+        </nav>
+    </header>
+    <section class="user-management">
+        <h1>Gestión de Usuarios</h1>
+        <!-- Formulario para agregar usuarios -->
+        <div class="add-user-form">
+            <h3>Agregar Nuevo Usuario</h3>
+            <input type="text" id="nombre" placeholder="Nombre">
+            <input type="text" id="apellido" placeholder="Apellido">
+            <input type="text" id="dni" placeholder="DNI">
+            <input type="tel" id="telefono" placeholder="Teléfono">
+            <input type="text" id="username" placeholder="Nombre de Usuario">
+            <input type="password" id="password" placeholder="Contraseña">
+            <input type="email" id="email" placeholder="Correo Electrónico">
+            <select id="rol" class="form-select">
+                <option value="" disabled selected>Seleccione Rol</option>
+                <option value="alumno">Alumno</option>
+                <option value="profesor">Profesor</option>
+                <option value="administrador">Administrador</option>
+            </select>
+            <button id="addUserBtn">Agregar Usuario</button>
+        </div>
+
+        <!-- Tabla de usuarios -->
+        <div class="user-list">
+            <h3>Usuarios Agregados</h3>
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Nombre y Apellido</th>
+                        <th>Usuario</th>
+                        <th>Curso</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="userList">
+                    <!-- Los usuarios se cargarán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tabla de Usuarios Pendientes -->
+        <div class="pendingList">
+            <h3>Usuarios Pendientes</h3>
+            <table class="pending-table">
+                <thead>
+                    <tr>
+                        <th>Nombre y Apellido</th>
+                        <th>Correo Electrónico</th>
+                        <th>DNI</th>
+                        <th>Curso</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="pendingList"></tbody>
+            </table>
+        </div>
+    </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-content container">
+            <div class="link">
+                <h3>Seguinos en nuetras Redes</h3>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Youtube</a></li>
+                    <li><a href="#">Aulas Digitales</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+<script src="./js/admin.js"></script>
+<script src="js/auth.js"></script>
+    </body>
+</body>
+
+</html>
