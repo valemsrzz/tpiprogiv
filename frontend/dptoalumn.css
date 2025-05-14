@@ -387,3 +387,29 @@ link h3{
     }
 }
 
+#buscarAlumno {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#buscarAlumno:hover {
+    background-color: #45a049;
+}
+
+#buscarAlumno:active {
+    background-color: #3d8b40;
+}
+
+/* Optional: Disable button style */
+#buscarAlumno:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+

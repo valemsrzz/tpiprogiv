@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const username = document.getElementById('usuario').value.toLowerCase();
+        const username = document.getElementById('usuario').value;
         const password = document.getElementById('contraseña').value;
 
         try {
@@ -13,24 +13,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ username, password }) // Mantenemos username en lugar de dni
             });
 
             const data = await response.json();
             console.log('Respuesta del servidor:', data);
 
             if (!response.ok) {
-                // Mostrar el mensaje exacto del backend (por ej., cuenta pendiente)
                 alert(data.message || 'Error en el inicio de sesión');
                 return;
             }
 
+            // Guardar el token y username en localStorage
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userDNI', username);
+            localStorage.setItem('userRole', data.role);
+
             if (data.success) {
-                window.location.href = data.redirect;
+                if (data.role === 'alumno') {
+                    window.location.href = 'inicio-alumno.html';
+                } else if (data.role === 'profesor') {
+                    window.location.href = 'calificaciones.html';
+                } else if (data.role === 'admin') {
+                    window.location.href = 'administrador.html';
+                }
             }
 
         } catch (error) {
-            console.error('Error completo:', error);
+            console.error('Error:', error);
             alert('Error al conectar con el servidor');
         }
     });
