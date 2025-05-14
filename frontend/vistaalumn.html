@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boletín Digital de Calificaciones - Colegio Provincial Dr. Ernesto Guevara</title>
     <link rel="stylesheet" href="vistaalumn.css">
 </head>
-
 <body>
-    <!-- Barra de navegación -->
     <header>
         <div class="logo">
             <img src="img/logoguevara.png" alt="logo del colegio">
@@ -24,22 +21,20 @@
             </ul>
         </nav>
     </header>
-    <!-- Título de la página -->
-        <h1>Boletín Digital de Calificaciones</h1>
+
+    <h1>Boletín Digital de Calificaciones</h1>
     
-    <!-- Información del alumno -->
     <div class="student-info">
         <div class="info-item">
             <span class="info-label">Alumno:</span>
-            <span id="studentName" class="info-value"><!-- Se llenará dinámicamente --></span>
+            <span id="studentName" class="info-value"></span>
         </div>
         <div class="info-item">
             <span class="info-label">Curso:</span>
-            <span id="studentClass" class="info-value"><!-- Se llenará dinámicamente --></span>
+            <span id="studentClass" class="info-value"></span>
         </div>
     </div>
 
-    <!-- Tabla de calificaciones -->
     <section id="boletin">
         <h3>Calificaciones por Materia</h3>
         <table>
@@ -59,99 +54,100 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr data-materia-id="1">
                     <td>Matemáticas</td>
-                    <td data-subject="mat" data-period="1" data-type="inf1"></td>
-                    <td data-subject="mat" data-period="1" data-type="inf2"></td>
-                    <td data-subject="mat" data-period="1" data-type="final"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="2">
                     <td>Inglés Técnico</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="3">
                     <td>Marco Jurídico</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="4">
                     <td>Hardware 4</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="5">
                     <td>Asistencia</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="6">
                     <td>Redes 3</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="7">
                     <td>Programación</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="8">
                     <td>Autogestión</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="9">
                     <td>Práct. Prof.</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
-                <tr>
+                <tr data-materia-id="10">
                     <td>EDI: Arduino</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-type="primer_informe1"></td>
+                    <td data-type="primer_informe2"></td>
+                    <td data-type="primer_final"></td>
+                    <td data-type="segundo_informe1"></td>
+                    <td data-type="segundo_informe2"></td>
+                    <td data-type="segundo_final"></td>
                 </tr>
             </tbody>
         </table>
     </section>
+
     <footer class="footer">
         <div class="footer-content container">
             <div class="link">
@@ -165,8 +161,8 @@
             </div>
         </div>
     </footer>
-        <script src="js/visualizacion.js"></script>
-        <script src="./routes/auth.js"></script>
-        <script src="js/auth.js"></script>
-    </body>
+    
+    <script src="js/visualizacion.js"></script>
+    <script src="js/auth.js"></script>
+</body>
 </html>

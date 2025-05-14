@@ -1,18 +1,24 @@
 // Verificar si el usuario está autenticado y es profesor
-document.addEventListener('DOMContentLoaded', function() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user || user.rol !== 'profesor') {
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch('http://localhost:3000/api/auth/check');
+        const data = await response.json();
+        if (!data.authenticated || data.user.rol !== 'profesor') {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        cargarCursos();
+        cargarMaterias();
+
+        // Event listeners para los filtros
+        document.getElementById('selectCurso').addEventListener('change', cargarAlumnos);
+        document.getElementById('selectMateria').addEventListener('change', cargarNotas);
+        document.getElementById('selectPeriodo').addEventListener('change', cargarNotas);
+    } catch (error) {
+        console.error('Error de autenticación:', error);
         window.location.href = 'login.html';
-        return;
     }
-
-    cargarCursos();
-    cargarMaterias();
-
-    // Event listeners para los filtros
-    document.getElementById('selectCurso').addEventListener('change', cargarAlumnos);
-    document.getElementById('selectMateria').addEventListener('change', cargarNotas);
-    document.getElementById('selectPeriodo').addEventListener('change', cargarNotas);
 });
 
 async function cargarCursos() {
@@ -71,9 +77,7 @@ async function cargarNotas() {
 
     try {
         const response = await fetch(`http://localhost:3000/api/calificaciones/curso/${cursoId}/materia/${materiaId}/periodo/${periodo}`, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+            credentials: 'include' // Para enviar las cookies de sesión
         });
         const notas = await response.json();
         
@@ -93,6 +97,43 @@ async function cargarNotas() {
     }
 }
 
+async function guardarNota(alumnoId) {
+    const materiaId = document.getElementById('selectMateria').value;
+    const periodo = document.getElementById('selectPeriodo').value;
+    const nota = document.querySelector(`input[data-alumno-id="${alumnoId}"]`).value;
+
+    if (!nota || !materiaId || !periodo) {
+        alert('Por favor complete todos los campos');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/api/calificaciones/actualizar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Para enviar las cookies de sesión
+            body: JSON.stringify({
+                id_alumno: alumnoId,
+                id_materia: materiaId,
+                tipo: `${periodo === '1' ? 'primer' : 'segundo'}_informe1`, // Ajustar según tu estructura
+                valor: parseInt(nota)
+            })
+        });
+
+        if (response.ok) {
+            alert('Nota guardada exitosamente');
+        } else {
+            const data = await response.json();
+            throw new Error(data.error || 'Error al guardar la nota');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message || 'Error al guardar la nota');
+    }
+}
+
 function mostrarTablaAlumnos(alumnos) {
     const tbody = document.querySelector('#tablaNotas tbody');
     tbody.innerHTML = '';
@@ -107,40 +148,4 @@ function mostrarTablaAlumnos(alumnos) {
         `;
         tbody.appendChild(tr);
     });
-}
-
-async function guardarNota(alumnoId) {
-    const materiaId = document.getElementById('selectMateria').value;
-    const periodo = document.getElementById('selectPeriodo').value;
-    const nota = document.querySelector(`input[data-alumno-id="${alumnoId}"]`).value;
-
-    if (!nota || !materiaId || !periodo) {
-        alert('Por favor complete todos los campos');
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost:3000/api/calificaciones', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                id_alumno: alumnoId,
-                id_materia: materiaId,
-                nota: parseInt(nota),
-                periodo: parseInt(periodo)
-            })
-        });
-
-        if (response.ok) {
-            alert('Nota guardada exitosamente');
-        } else {
-            throw new Error('Error al guardar la nota');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al guardar la nota');
-    }
 }

@@ -64,11 +64,12 @@ app.get('/administrador.html', (req, res) => {
 
 // Configuración de rutas API
 const authRoutes = require('./routes/authRoutes');
-const gradesRoutes = require('./routes/grades');
 const userRoutes = require('./routes/users');
+const calificacionesRoutes = require('./routes/calificacionesRoutes');
+
 app.use('/api/auth', authRoutes); 
-app.use('/api/grades', gradesRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/calificaciones', calificacionesRoutes);
 
 // Manejadores de errores
 app.use((req, res) => {

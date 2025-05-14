@@ -4,12 +4,12 @@ const db = require('../db');
 // LOGIN DE USUARIO
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { dni, password } = req.body;
 
-        // Buscar usuario
+        // Buscar usuario por DNI
         const [users] = await db.promise().query(
-            'SELECT id, nombre, apellido, password, rol, estado, email FROM usuarios WHERE username = ?',
-            [username]
+            'SELECT id, nombre, apellido, password, rol, estado, email FROM usuarios WHERE dni = ?',
+            [dni]
         );
         const user = users[0];
 
@@ -31,6 +31,16 @@ const login = async (req, res) => {
             return res.status(403).json({ success: false, message: msg });
         }
 
+        // Crear token simple (en producción usar JWT)
+        const token = Buffer.from(`${user.id}-${Date.now()}`).toString('base64');
+
+        // Guardar token en sesión
+        req.session.user = {
+            id: user.id,
+            rol: user.rol,
+            token: token
+        };
+
         // Redirección según rol
         let redirect;
         switch (user.rol) {
@@ -50,7 +60,8 @@ const login = async (req, res) => {
         res.json({
             success: true,
             redirect,
-            role: user.rol
+            role: user.rol,
+            token: token
         });
 
     } catch (error) {

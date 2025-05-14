@@ -6,7 +6,11 @@ router.post('/login', login);
 router.post('/register', register);
 
 const authMiddleware = (req, res, next) => {
-    if (!req.session.user) {
+    // Verificar tanto sesión como token
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!req.session.user && !token) {
         return res.status(401).json({ error: 'No autorizado' });
     }
     next();

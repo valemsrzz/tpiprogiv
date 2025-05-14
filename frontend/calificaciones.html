@@ -30,17 +30,13 @@
     <div class="user-info">
         <label for="dni">DNI del estudiante:</label>
         <input type="text" id="dni" placeholder="Ingrese el DNI" required>
+        <button id="buscarAlumno">Buscar Alumno</button>
         
         <label for="nombre">Nombre del estudiante:</label>
-        <input type="text" id="nombre" placeholder="Ingrese el nombre">
-        
-        <label for="curso">Curso:</label>
-        <select id="curso">
-            <option value="7-1">7° 1</option>
-            <option value="7-2">7° 2</option>
-            <option value="7-3">7° 3</option>
-        </select>
+        <input type="text" id="nombre" placeholder="Nombre completo" readonly>
+
     </div>
+
     <section id="notas">
         <table>
             <tr>
@@ -56,98 +52,98 @@
                 <th>2DO INFORME</th>
                 <th>NOTA FINAL</th>
             </tr>
-            <tr>
+            <tr data-materia-id="1">
                 <td>Matemáticas</td>
-                <td><input type="number" id="mat_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="mat_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="mat_p1_final" readonly></td>
-                <td><input type="number" id="mat_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="mat_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="mat_p2_final" readonly></td>
+                <td><input type="number" id="1_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="1_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="1_p1_final" readonly></td>
+                <td><input type="number" id="1_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="1_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="1_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="2">
                 <td>Inglés Técnico</td>
-                <td><input type="number" id="ing_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="ing_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="ing_p1_final" readonly></td>
-                <td><input type="number" id="ing_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="ing_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="ing_p2_final" readonly></td>
+                <td><input type="number" id="2_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="2_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="2_p1_final" readonly></td>
+                <td><input type="number" id="2_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="2_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="2_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="3">
                 <td>Marco Jurídico</td>
-                <td><input type="number" id="mj_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="mj_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="mj_p1_final" readonly></td>
-                <td><input type="number" id="mj_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="mj_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="mj_p2_final" readonly></td>
+                <td><input type="number" id="3_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="3_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="3_p1_final" readonly></td>
+                <td><input type="number" id="3_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="3_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="3_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="4">
                 <td>Hardware 4</td>
-                <td><input type="number" id="h4_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="h4_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="h4_p1_final" readonly></td>
-                <td><input type="number" id="h4_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="h4_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="h4_p2_final" readonly></td>
+                <td><input type="number" id="4_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="4_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="4_p1_final" readonly></td>
+                <td><input type="number" id="4_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="4_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="4_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="5">
                 <td>Asistencia</td>
-                <td><input type="number" id="asis_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="asis_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="asis_p1_final" readonly></td>
-                <td><input type="number" id="asis_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="asis_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="asis_p2_final" readonly></td>
+                <td><input type="number" id="5_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="5_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="5_p1_final" readonly></td>
+                <td><input type="number" id="5_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="5_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="5_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="6">
                 <td>Redes 3</td>
-                <td><input type="number" id="r3_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="r3_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="r3_p1_final" readonly></td>
-                <td><input type="number" id="r3_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="r3_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="r3_p2_final" readonly></td>
+                <td><input type="number" id="6_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="6_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="6_p1_final" readonly></td>
+                <td><input type="number" id="6_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="6_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="6_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="7">
                 <td>Programación</td>
-                <td><input type="number" id="prog_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="prog_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="prog_p1_final" readonly></td>
-                <td><input type="number" id="prog_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="prog_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="prog_p2_final" readonly></td>
+                <td><input type="number" id="7_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="7_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="7_p1_final" readonly></td>
+                <td><input type="number" id="7_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="7_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="7_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="8">
                 <td>Autogestión</td>
-                <td><input type="number" id="aut_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="aut_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="aut_p1_final" readonly></td>
-                <td><input type="number" id="aut_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="aut_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="aut_p2_final" readonly></td>
+                <td><input type="number" id="8_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="8_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="8_p1_final" readonly></td>
+                <td><input type="number" id="8_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="8_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="8_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="9">
                 <td>Práct. Prof.</td>
-                <td><input type="number" id="pp_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="pp_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="pp_p1_final" readonly></td>
-                <td><input type="number" id="pp_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="pp_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="pp_p2_final" readonly></td>
+                <td><input type="number" id="9_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="9_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="9_p1_final" readonly></td>
+                <td><input type="number" id="9_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="9_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="9_p2_final" readonly></td>
             </tr>
-            <tr>
+            <tr data-materia-id="10">
                 <td>EDI: Arduino</td>
-                <td><input type="number" id="edia_p1_inf1" min="1" max="10"></td>
-                <td><input type="number" id="edia_p1_inf2" min="1" max="10"></td>
-                <td><input type="number" id="edia_p1_final" readonly></td>
-                <td><input type="number" id="edia_p2_inf1" min="1" max="10"></td>
-                <td><input type="number" id="edia_p2_inf2" min="1" max="10"></td>
-                <td><input type="number" id="edia_p2_final" readonly></td>
+                <td><input type="number" id="10_p1_inf1" min="1" max="10"></td>
+                <td><input type="number" id="10_p1_inf2" min="1" max="10"></td>
+                <td><input type="number" id="10_p1_final" readonly></td>
+                <td><input type="number" id="10_p2_inf1" min="1" max="10"></td>
+                <td><input type="number" id="10_p2_inf2" min="1" max="10"></td>
+                <td><input type="number" id="10_p2_final" readonly></td>
             </tr>
         </table>
-        <button class="btn" onclick="saveGrades()">Guardar Cambios</button>
+        <button class="btn" id="guardarCambios">Guardar Cambios</button>
     </section>
     <footer class="footer">
         <div class="footer-content container">
@@ -162,9 +158,8 @@
             </div>
         </div>
     </footer>
-    <script src="./routes/auth.js"></script>
-    <script src="js/notas.js" defer></script>
     <script src="js/auth.js"></script>
+    <script src="js/notas.js"></script>
 </body>
 
 </html>
