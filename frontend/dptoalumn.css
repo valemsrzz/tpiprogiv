@@ -49,26 +49,13 @@ nav a:hover {
     color: #b43232;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    height: 5rem;
-    margin-right: 5%;
-}
-
- a {
+/* Eliminar esta regla genérica que está causando conflictos */
+a {
     text-decoration: none;
     color: #fbfafa;
     font-size: 125%;
     font-weight: 600;
     padding-right: 1rem;
-}
-
-nav a:hover {
-color: #b43232;
 }
 
 .logo {
@@ -214,36 +201,19 @@ td input:focus {
 }
 
 /* Footer */
-.footer{
-    padding: 50px 0;
-    background: linear-gradient(90deg, rgb(36, 35, 35)0%, rgb(26, 25, 25)100%);
+.footer {
+    padding: 20px 0;
+    background: linear-gradient(90deg, rgb(36, 35, 35) 0%, rgb(26, 25, 25) 100%);
+    margin-top: auto;
 }
 
-.footer-content{
-    display: flex;
-    justify-content: space-between;
-    padding: 16px;
+.footer-content {
+    text-align: center;
 }
 
-link h3{
-    font-size: 30px;
+.footer-content p {
+    font-size: 14px;
     color: #c5c5c5;
-    margin-bottom: 15px;
-    justify-content: center
-}
-
-.link ul li a{
-    font-size: 16px;
-    color: #c5c5c5;
-    display: block;
-    margin-bottom: 15px;
-}
-
-.footer-content h1{
-     font-size: 30px;
-    color: #c5c5c5;
-    margin-bottom: 15px;
-    justify-content: center;
 }
 
 .logout-btn {
@@ -358,35 +328,9 @@ link h3{
         max-width: 40px;
         font-size: 12px;
     }
+}  /* Cerrar el media query anterior */
 
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .link ul {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .link ul li a {
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-}
-
-/* Ajuste para scroll horizontal en tablas en dispositivos pequeños */
-@media screen and (max-width: 768px) {
-    #notas {
-        overflow-x: auto;
-    }
-
-    table {
-        min-width: 800px;
-    }
-}
-
+/* Estilos para el botón de búsqueda */
 #buscarAlumno {
     background-color: #4CAF50;
     color: white;
@@ -407,7 +351,6 @@ link h3{
     background-color: #3d8b40;
 }
 
-/* Optional: Disable button style */
 #buscarAlumno:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
