@@ -1,5 +1,5 @@
-/* Mantener los estilos base */
-*{
+/* Estilos base */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -12,14 +12,16 @@ body {
     background: linear-gradient(150deg, #961f1f, #262626);
     color: #ffffff;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Estilos de encabezado */
+/* Header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(90deg, rgb(36, 35, 35)0%, rgb(26, 25, 25)100%);
+    background: linear-gradient(90deg, rgb(36, 35, 35) 0%, rgb(26, 25, 25) 100%);
     color: white;
     padding: 5px;
     font-size: 75%;
@@ -35,8 +37,8 @@ header {
     margin-right: 5%;
 }
 
-/* Estilos de navegación */
-a {
+/* Navegación */
+nav a {
     text-decoration: none;
     color: #fbfafa;
     font-size: 125%;
@@ -48,7 +50,7 @@ nav a:hover {
     color: #b43232;
 }
 
-/* Estilos de contenido principal */
+/* Contenido principal */
 .user-management {
     max-width: 1200px;
     margin: 0 auto;
@@ -58,15 +60,16 @@ nav a:hover {
 h1 {
     color: #ffffff;
     font-size: 35px;
-    margin-bottom: 15px;
-    margin-top: 50px;
+    margin: 50px 0 15px;
     text-align: center;
 }
 
 h3 {
     text-align: center;
-    color: #ffffff;
+    color: #333333;
     margin-bottom: 20px;
+    font-size: 24px;
+    text-transform: uppercase;
 }
 
 /* Formulario de usuario */
@@ -76,17 +79,28 @@ h3 {
     padding: 15px;
     background: white;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
-.add-user-form input {
+.add-user-form input,
+.add-user-form select {
     width: 80%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
+}
+
+.add-user-form select {
+    background-color: white;
+    cursor: pointer;
+}
+
+.add-user-form select:focus {
+    outline: none;
+    border-color: #666;
 }
 
 .add-user-form button {
@@ -103,37 +117,24 @@ h3 {
     background-color: #b91818;
 }
 
-.add-user-form select {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    background-color: white;
-    cursor: pointer;
-}
-
-.add-user-form select:focus {
-    outline: none;
-    border-color: #666;
-}
-
-/* Estilos compartidos de tablas */
-.user-table, .pending-table {
+/* Tablas */
+.user-table,
+.pending-table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
-.user-table th, 
+.user-table th,
 .user-table td,
 .pending-table th,
 .pending-table td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #dee2e6;
-    color: #000000; /* Añadido: color negro para el texto */
+    color: #333333;
 }
 
 .user-table th,
@@ -141,6 +142,8 @@ h3 {
     background-color: #2c2c2c;
     color: white;
     font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
 }
 
 /* Contenedores de tablas */
@@ -152,14 +155,29 @@ h3 {
     padding: 25px;
     background-color: white;
     border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.user-list h3,
-.pending-users h3 {
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
+/* Ajuste específico para la tabla de usuarios pendientes */
+.pendingList {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto 60px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.pending-table {
+    background-color: white;
+    width: 100%;
+}
+
+.pending-users {
+    margin-bottom: 60px; /* Aumentar el espacio antes del footer */
+}
+
 
 /* Botones de acción */
 .action-buttons {
@@ -194,29 +212,19 @@ h3 {
 
 /* Footer */
 .footer {
-    padding: 50px 0;
-    background: linear-gradient(90deg, rgb(36, 35, 35)0%, rgb(26, 25, 25)100%);
+    padding: 20px 0;
+    background: linear-gradient(90deg, rgb(36, 35, 35) 0%, rgb(26, 25, 25) 100%);
+    margin-top: auto;
 }
-
 .footer-content {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px;
+    text-align: center;
 }
 
-.link ul li a {
-    font-size: 16px;
+.footer-content p {
+    font-size: 14px;
     color: #c5c5c5;
-    display: block;
-    margin-bottom: 15px;
 }
 
-.footer-content h1 {
-    font-size: 30px;
-    color: #c5c5c5;
-    margin-bottom: 15px;
-    justify-content: center;
-}
 
 .logout-btn {
     color: #ffffff;
@@ -231,12 +239,11 @@ h3 {
     transform: translateY(-2px);
 }
 
-/* Estilos responsivos */
+/* Media Queries */
 @media screen and (max-width: 1200px) {
     .user-management {
         padding: 15px;
     }
-
     .user-list,
     .pending-users {
         width: 95%;
@@ -247,7 +254,6 @@ h3 {
     .add-user-form {
         width: 70%;
     }
-
     h1 {
         font-size: 28px;
     }
@@ -258,83 +264,61 @@ h3 {
         flex-direction: column;
         padding: 10px;
     }
-
     .logo {
         margin-bottom: 10px;
     }
-
     nav {
         width: 100%;
         text-align: center;
     }
-
     nav a {
         font-size: 100%;
         padding: 8px;
     }
-
     .add-user-form {
         width: 90%;
     }
-
     .add-user-form input,
     .add-user-form select {
         width: 90%;
     }
-
     .user-list,
     .pending-users {
         width: 100%;
         padding: 15px;
         overflow-x: auto;
     }
-
     .user-table,
     .pending-table {
         font-size: 14px;
     }
-
     .action-buttons {
         flex-direction: column;
         gap: 5px;
     }
-
     .btn-accept,
     .btn-decline,
     .user-table button {
         width: 100%;
     }
-}
-
-@media screen and (max-width: 480px) {
     .logo img {
         height: 4rem;
     }
-
     h1 {
         font-size: 24px;
     }
-
     .add-user-form {
         padding: 10px;
     }
-
-    .user-table th, 
+    .user-table th,
     .user-table td,
     .pending-table th,
     .pending-table td {
         padding: 8px;
         font-size: 12px;
     }
-
     .footer-content {
         flex-direction: column;
         text-align: center;
-    }
-
-    .link ul {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 }

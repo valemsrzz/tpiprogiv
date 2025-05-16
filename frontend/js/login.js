@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password }) // Mantenemos username en lugar de dni
+                body: JSON.stringify({ username, password }) 
             });
 
             const data = await response.json();
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.role === 'alumno') {
                     window.location.href = 'inicio-alumno.html';
                 } else if (data.role === 'profesor') {
-                    window.location.href = 'calificaciones.html';
+                    window.location.href = 'inicio-profesor.html';
                 } else if (data.role === 'admin') {
                     window.location.href = 'administrador.html';
                 }
