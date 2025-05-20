@@ -1,91 +1,101 @@
-// Esperar a que el DOM esté completamente cargado
+// Importamos la función de notificación desde el archivo de utilidades
+import { showNotification } from './utils.js';
+
+// Cuando el DOM está completamente cargado, inicializamos la aplicación
 document.addEventListener('DOMContentLoaded', () => {
-    // Obtener referencias a elementos del DOM
+    // Obtenemos referencias a los elementos del DOM que necesitaremos
     const dniInput = document.getElementById('dni');
     const buscarBtn = document.getElementById('buscarAlumno');
     const guardarBtn = document.getElementById('guardarCambios');
 
-    // Configurar event listeners para inputs numéricos
+    // Configuramos los event listeners para todos los campos de notas
     const inputs = document.querySelectorAll('input[type="number"]:not([readonly])');
     inputs.forEach(input => {
         input.addEventListener('change', handleGradeChange);
     });
 
-    // Event listener para el botón de búsqueda
+    // Configuramos el event listener para el botón de búsqueda
     buscarBtn.addEventListener('click', async () => {
         const dni = dniInput.value;
+        // Validamos que se haya ingresado un DNI
         if (!dni) {
-            alert('Por favor ingrese un DNI');
+            showNotification('warning', 'Por favor ingrese un DNI');
             return;
         }
 
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('No hay sesión activa. Por favor, inicie sesión nuevamente.');
-                window.location.href = 'login.html';
-                return;
-            }
-
+            // Realizamos la petición al servidor para buscar al alumno
             const response = await fetch(`http://localhost:3000/api/calificaciones/alumno/${dni}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 }
             });
             
-            const data = await response.json();
-            
+            // Manejamos los diferentes estados de la respuesta
             if (!response.ok) {
-                throw new Error(data.error || 'Error al buscar alumno');
+                if (response.status === 401) {
+                    showNotification('error', 'No hay sesión activa. Por favor, inicie sesión nuevamente.');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                    return;
+                }
+                throw new Error('Error al buscar alumno');
             }
 
+            const data = await response.json();
+
+            // Verificamos que se hayan recibido datos del alumno
             if (!data.alumno) {
                 throw new Error('No se encontraron datos del alumno');
             }
 
+            // Actualizamos el nombre del alumno en el formulario
             const nombreInput = document.getElementById('nombre');
             if (nombreInput) {
                 nombreInput.value = `${data.alumno.nombre} ${data.alumno.apellido}`;
+                showNotification('success', 'Alumno encontrado exitosamente');
             }
             
+            // Rellenamos las calificaciones si existen
             if (data.calificaciones && data.calificaciones.length > 0) {
                 fillExistingGrades(data.calificaciones);
             } else {
-                console.log('No se encontraron calificaciones para este alumno');
+                showNotification('info', 'No se encontraron calificaciones para este alumno');
             }
             
         } catch (error) {
             console.error('Error:', error);
-            alert(error.message || 'Error al buscar alumno');
+            showNotification('error', error.message || 'Error al buscar alumno');
         }
     });
 
-    // Event listener para el botón guardar
+    // Configuramos el event listener para el botón de guardar
     guardarBtn.addEventListener('click', saveGrades);
 });
 
-// Función para llenar las calificaciones existentes
+// Función para rellenar las calificaciones existentes en el formulario
 function fillExistingGrades(calificaciones) {
-    // Clear existing values first
+    // Limpiamos todos los campos de notas
     document.querySelectorAll('input[type="number"]').forEach(input => input.value = '');
 
+    // Rellenamos cada calificación en su campo correspondiente
     calificaciones.forEach(calificacion => {
         const row = document.querySelector(`tr[data-materia-id="${calificacion.id_materia}"]`);
         if (row) {
             try {
-                // Primer parcial
+                // Obtenemos referencias a todos los campos de notas
                 const p1_inf1 = document.getElementById(`${calificacion.id_materia}_p1_inf1`);
                 const p1_inf2 = document.getElementById(`${calificacion.id_materia}_p1_inf2`);
                 const p1_final = document.getElementById(`${calificacion.id_materia}_p1_final`);
                 
-                // Segundo parcial
                 const p2_inf1 = document.getElementById(`${calificacion.id_materia}_p2_inf1`);
                 const p2_inf2 = document.getElementById(`${calificacion.id_materia}_p2_inf2`);
                 const p2_final = document.getElementById(`${calificacion.id_materia}_p2_final`);
 
-                // Set values if they exist
+                // Asignamos los valores si existen
                 if (p1_inf1 && calificacion.primer_informe1) p1_inf1.value = calificacion.primer_informe1;
                 if (p1_inf2 && calificacion.primer_informe2) p1_inf2.value = calificacion.primer_informe2;
                 if (p1_final && calificacion.primer_final) p1_final.value = calificacion.primer_final;
@@ -95,79 +105,96 @@ function fillExistingGrades(calificaciones) {
                 if (p2_final && calificacion.segundo_final) p2_final.value = calificacion.segundo_final;
 
             } catch (error) {
-                console.error(`Error setting grades for subject ${calificacion.id_materia}:`, error);
+                console.error(`Error al establecer notas para la materia ${calificacion.id_materia}:`, error);
             }
         }
     });
 }
 
-// Manejar cambios en las notas
+// Función para manejar el cambio de una calificación
 function handleGradeChange(event) {
     const input = event.target;
+    // Extraemos el identificador de la materia y el período del ID del campo
     const [subject, period] = input.id.split('_');
     const mainPeriod = period.includes('p1') ? 'p1' : 'p2';
     
+    // Validamos la nota y calculamos el promedio si es válida
     if (validateGrade(input)) {
         calculateFinal(subject, mainPeriod);
     }
 }
 
-// Calcular nota final
+// Función para calcular la nota final de un período
 function calculateFinal(subject, period) {
+    // Obtenemos los valores de los informes
     const inf1 = parseFloat(document.getElementById(`${subject}_${period}_inf1`).value) || 0;
     const inf2 = parseFloat(document.getElementById(`${subject}_${period}_inf2`).value) || 0;
     
+    // Calculamos el promedio si ambos informes tienen nota
     if (inf1 && inf2) {
         const final = (inf1 + inf2) / 2;
         document.getElementById(`${subject}_${period}_final`).value = final.toFixed(2);
     }
 }
 
-// Función para guardar calificaciones
+// Función para guardar todas las calificaciones
 async function saveGrades() {
     const dni = document.getElementById('dni').value;
     if (!dni) {
-        alert('Por favor, primero busque un alumno');
+        showNotification('warning', 'Por favor, primero busque un alumno');
         return;
     }
     
     try {
+        // Verificamos que el alumno exista
         const alumnoResponse = await fetch(`http://localhost:3000/api/calificaciones/alumno/${dni}`, {
+            credentials: 'include',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Content-Type': 'application/json'
             }
         });
         
+        // Manejamos errores de autenticación
         if (!alumnoResponse.ok) {
+            if (alumnoResponse.status === 401) {
+                showNotification('error', 'No hay sesión activa. Por favor, inicie sesión nuevamente.');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
             throw new Error('Error al obtener información del alumno');
         }
         
+        // Procesamos la respuesta
         const alumnoData = await alumnoResponse.json();
         const id_alumno = alumnoData.alumno.id;
 
-        // Recolectar todas las calificaciones que tienen valor
+        // Obtenemos todas las materias del formulario
         const materias = document.querySelectorAll('tr[data-materia-id]');
         let actualizacionesExitosas = 0;
         let actualizacionesFallidas = 0;
 
+        // Procesamos cada materia
         for (const materia of materias) {
             const id_materia = materia.getAttribute('data-materia-id');
             
-            // Primero verificar si existe la calificación
             try {
+                // Verificamos si ya existe un registro de calificación
                 const checkResponse = await fetch(`http://localhost:3000/api/calificaciones/verificar/${id_alumno}/${id_materia}`, {
+                    credentials: 'include',
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Content-Type': 'application/json'
                     }
                 });
 
+                // Si no existe, creamos uno nuevo
                 if (!checkResponse.ok) {
-                    // Si no existe, crear el registro
                     const createResponse = await fetch('http://localhost:3000/api/calificaciones/crear', {
                         method: 'POST',
+                        credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             id_alumno,
@@ -180,7 +207,7 @@ async function saveGrades() {
                     }
                 }
 
-                // Proceder con la actualización
+                // Definimos todas las calificaciones posibles
                 const calificaciones = [
                     { tipo: 'primer_informe1', elemento: `${id_materia}_p1_inf1` },
                     { tipo: 'primer_informe2', elemento: `${id_materia}_p1_inf2` },
@@ -190,17 +217,19 @@ async function saveGrades() {
                     { tipo: 'segundo_final', elemento: `${id_materia}_p2_final` }
                 ];
 
+                // Procesamos cada calificación
                 for (const cal of calificaciones) {
                     const input = document.getElementById(cal.elemento);
                     if (input && input.value && !input.readOnly) {
                         const valor = parseFloat(input.value);
                         
+                        // Validamos y guardamos la nota
                         if (valor >= 1 && valor <= 10) {
                             const response = await fetch('http://localhost:3000/api/calificaciones/actualizar', {
                                 method: 'POST',
+                                credentials: 'include',
                                 headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                    'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
                                     id_alumno,
@@ -225,23 +254,24 @@ async function saveGrades() {
             }
         }
 
+        // Mostramos el resultado final
         if (actualizacionesFallidas > 0) {
-            alert(`Proceso completado con algunos errores. ${actualizacionesExitosas} notas guardadas, ${actualizacionesFallidas} fallidas.`);
+            showNotification('warning', `Proceso completado con algunos errores. ${actualizacionesExitosas} notas guardadas, ${actualizacionesFallidas} fallidas.`);
         } else {
-            alert('Todas las calificaciones fueron guardadas exitosamente');
+            showNotification('success', 'Todas las calificaciones fueron guardadas exitosamente');
         }
         
     } catch (error) {
         console.error('Error general:', error);
-        alert(error.message || 'Error al guardar las calificaciones');
+        showNotification('error', error.message || 'Error al guardar las calificaciones');
     }
 }
 
-// Validación de notas
+// Función para validar que una calificación esté en el rango correcto
 function validateGrade(input) {
     const value = parseFloat(input.value);
     if (value < 1 || value > 10) {
-        alert('Las notas deben estar entre 1 y 10');
+        showNotification('error', 'Las notas deben estar entre 1 y 10');
         input.value = '';
         return false;
     }

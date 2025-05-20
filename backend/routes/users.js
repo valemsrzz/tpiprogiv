@@ -4,11 +4,12 @@ const router = express.Router();
 const db = require('../db');
 const bcrypt = require('bcrypt');
 const { adminMiddleware } = require('./auth');
-const { register } = require('../controllers/authController'); // Ruta corregida según tu estructura
+const { register } = require('../controllers/authController');
 
-// Obtener todos los usuarios (solo admin)
+// Ruta para obtener todos los usuarios (solo accesible por administradores)
 router.get('/', adminMiddleware, async (req, res) => {
     try {
+        // Consulta para obtener datos básicos de todos los usuarios
         const [results] = await db.promise().query(
             'SELECT id, nombre, apellido, username, id_curso, rol FROM usuarios'
         );
@@ -19,9 +20,10 @@ router.get('/', adminMiddleware, async (req, res) => {
     }
 });
 
-// Obtener usuarios pendientes (solo admin)
+// Ruta para obtener usuarios pendientes de aprobación (solo administradores)
 router.get('/pending', adminMiddleware, async (req, res) => {
     try {
+        // Consulta para obtener usuarios con estado pendiente
         const [results] = await db.promise().query(
             'SELECT id, nombre, email, dni, id_curso FROM usuarios WHERE estado = "pendiente"'
         );
@@ -32,9 +34,10 @@ router.get('/pending', adminMiddleware, async (req, res) => {
     }
 });
 
-// Aprobar usuario (solo admin)
+// Ruta para aprobar un usuario (solo administradores)
 router.post('/approve/:id', adminMiddleware, async (req, res) => {
     try {
+        // Actualiza el estado del usuario a "activo"
         await db.promise().query(
             'UPDATE usuarios SET estado = "activo" WHERE id = ?',
             [req.params.id]
@@ -46,11 +49,14 @@ router.post('/approve/:id', adminMiddleware, async (req, res) => {
     }
 });
 
-// Crear usuario desde panel admin (activo por defecto)
+// Ruta para crear usuario desde el panel de administración (estado activo por defecto)
 router.post('/create/admin', adminMiddleware, async (req, res) => {
+    // Extraemos los datos del cuerpo de la petición
     const { nombre, apellido, dni, email, telefono, username, password, rol } = req.body;
     try {
+        // Encriptamos la contraseña antes de guardarla
         const hashedPassword = await bcrypt.hash(password, 10);
+        // Insertamos el nuevo usuario con estado activo
         await db.promise().query(
             'INSERT INTO usuarios (nombre, apellido, dni, email, telefono, username, password, rol, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, "activo")',
             [nombre, apellido, dni, email, telefono, username, hashedPassword, rol]
@@ -62,14 +68,16 @@ router.post('/create/admin', adminMiddleware, async (req, res) => {
     }
 });
 
-// Registro público de usuarios (estado: pendiente)
+// Ruta para registro público de usuarios (estado pendiente por defecto)
 router.post('/create', register);
 
-// Eliminar usuario (solo admin)
+// Ruta para eliminar usuario (solo administradores)
 router.delete('/:id', adminMiddleware, async (req, res) => {
     const userId = req.params.id;
     try {
+        // Intentamos eliminar el usuario
         const [result] = await db.promise().query('DELETE FROM usuarios WHERE id = ?', [userId]);
+        // Verificamos si se eliminó algún usuario
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
@@ -80,4 +88,5 @@ router.delete('/:id', adminMiddleware, async (req, res) => {
     }
 });
 
+// Exportamos el enrutador para ser usado en la aplicación principal
 module.exports = router;

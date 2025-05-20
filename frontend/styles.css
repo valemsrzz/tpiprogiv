@@ -3,27 +3,65 @@
     top: 20px;
     right: 20px;
     padding: 15px 25px;
-    border-radius: 5px;
+    border-radius: 8px;
     color: white;
     z-index: 1000;
     animation: slideIn 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    min-width: 280px;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
 }
 
 .notification.success {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-left: 4px solid #1e7e34;
 }
 
 .notification.error {
-    background-color: #dc3545;
+    background: linear-gradient(135deg, #dc3545, #f86d7d);
+    border-left: 4px solid #bd2130;
+}
+
+.notification.warning {
+    background: linear-gradient(135deg, #ffc107, #ffdb4d);
+    border-left: 4px solid #d39e00;
+    color: #333;
+}
+
+.notification.info {
+    background: linear-gradient(135deg, #17a2b8, #4dd4e9);
+    border-left: 4px solid #117a8b;
+}
+
+.notification:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes slideIn {
     from {
-        transform: translateX(100%);
+        transform: translateX(120%);
         opacity: 0;
     }
     to {
         transform: translateX(0);
         opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%);
+        opacity: 0;
     }
 }
