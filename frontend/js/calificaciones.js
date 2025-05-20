@@ -1,17 +1,20 @@
-// Verificar si el usuario está autenticado y es profesor
+// Verifica la autenticación del usuario cuando se carga la página
 document.addEventListener('DOMContentLoaded', async function() {
     try {
+        // Hace una petición para verificar si el usuario está autenticado
         const response = await fetch('http://localhost:3000/api/auth/check');
         const data = await response.json();
+        // Si no está autenticado o no es profesor, redirige al login
         if (!data.authenticated || data.user.rol !== 'profesor') {
             window.location.href = 'login.html';
             return;
         }
 
+        // Carga los datos iniciales necesarios
         cargarCursos();
         cargarMaterias();
 
-        // Event listeners para los filtros
+        // Configura los event listeners para los filtros de selección
         document.getElementById('selectCurso').addEventListener('change', cargarAlumnos);
         document.getElementById('selectMateria').addEventListener('change', cargarNotas);
         document.getElementById('selectPeriodo').addEventListener('change', cargarNotas);
@@ -21,12 +24,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
+// Función para cargar la lista de cursos disponibles
 async function cargarCursos() {
     try {
+        // Obtiene la lista de cursos del servidor
         const response = await fetch('http://localhost:3000/api/cursos');
         const cursos = await response.json();
         const select = document.getElementById('selectCurso');
         
+        // Agrega cada curso como una opción en el selector
         cursos.forEach(curso => {
             const option = document.createElement('option');
             option.value = curso.id;
@@ -38,12 +44,15 @@ async function cargarCursos() {
     }
 }
 
+// Función para cargar la lista de materias disponibles
 async function cargarMaterias() {
     try {
+        // Obtiene la lista de materias del servidor
         const response = await fetch('http://localhost:3000/api/materias');
         const materias = await response.json();
         const select = document.getElementById('selectMateria');
         
+        // Agrega cada materia como una opción en el selector
         materias.forEach(materia => {
             const option = document.createElement('option');
             option.value = materia.id;
@@ -55,11 +64,13 @@ async function cargarMaterias() {
     }
 }
 
+// Función para cargar la lista de alumnos de un curso específico
 async function cargarAlumnos() {
     const cursoId = document.getElementById('selectCurso').value;
     if (!cursoId) return;
 
     try {
+        // Obtiene la lista de alumnos del curso seleccionado
         const response = await fetch(`http://localhost:3000/api/usuarios/alumnos/curso/${cursoId}`);
         const alumnos = await response.json();
         mostrarTablaAlumnos(alumnos);
@@ -68,6 +79,7 @@ async function cargarAlumnos() {
     }
 }
 
+// Función para cargar las notas según los filtros seleccionados
 async function cargarNotas() {
     const cursoId = document.getElementById('selectCurso').value;
     const materiaId = document.getElementById('selectMateria').value;
@@ -76,12 +88,13 @@ async function cargarNotas() {
     if (!cursoId || !materiaId || !periodo) return;
 
     try {
+        // Obtiene las notas según los filtros seleccionados
         const response = await fetch(`http://localhost:3000/api/calificaciones/curso/${cursoId}/materia/${materiaId}/periodo/${periodo}`, {
-            credentials: 'include' // Para enviar las cookies de sesión
+            credentials: 'include' // Incluye las cookies de sesión
         });
         const notas = await response.json();
         
-        // Actualizar las notas en la tabla
+        // Actualiza las notas en la tabla
         const inputs = document.querySelectorAll('.nota-input');
         inputs.forEach(input => {
             const alumnoId = input.dataset.alumnoId;
@@ -97,27 +110,30 @@ async function cargarNotas() {
     }
 }
 
+// Función para guardar una nota individual
 async function guardarNota(alumnoId) {
     const materiaId = document.getElementById('selectMateria').value;
     const periodo = document.getElementById('selectPeriodo').value;
     const nota = document.querySelector(`input[data-alumno-id="${alumnoId}"]`).value;
 
+    // Validación de campos requeridos
     if (!nota || !materiaId || !periodo) {
         alert('Por favor complete todos los campos');
         return;
     }
 
     try {
+        // Envía la nota al servidor para guardarla
         const response = await fetch('http://localhost:3000/api/calificaciones/actualizar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'include', // Para enviar las cookies de sesión
+            credentials: 'include',
             body: JSON.stringify({
                 id_alumno: alumnoId,
                 id_materia: materiaId,
-                tipo: `${periodo === '1' ? 'primer' : 'segundo'}_informe1`, // Ajustar según tu estructura
+                tipo: `${periodo === '1' ? 'primer' : 'segundo'}_informe1`,
                 valor: parseInt(nota)
             })
         });
@@ -134,10 +150,12 @@ async function guardarNota(alumnoId) {
     }
 }
 
+// Función para mostrar la tabla de alumnos con sus campos de notas
 function mostrarTablaAlumnos(alumnos) {
     const tbody = document.querySelector('#tablaNotas tbody');
     tbody.innerHTML = '';
 
+    // Crea una fila por cada alumno con sus campos de notas
     alumnos.forEach(alumno => {
         const tr = document.createElement('tr');
         tr.innerHTML = `

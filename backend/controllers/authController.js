@@ -38,7 +38,8 @@ const login = async (req, res) => {
         req.session.user = {
             id: user.id,
             rol: user.rol,
-            token: token
+            token: token,
+            dni: dni  // Agregar el DNI a la sesión
         };
 
         // Redirección según rol
@@ -102,7 +103,29 @@ const register = async (req, res) => {
     }
 };
 
+// Obtener información del usuario por DNI
+const getUserByDNI = async (req, res) => {
+    try {
+        const dni = req.params.dni;
+        const [users] = await db.promise().query(
+            'SELECT id, nombre, apellido, email, rol, estado FROM usuarios WHERE dni = ?',
+            [dni]
+        );
+
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
+
+        const user = users[0];
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error('Error al obtener usuario por DNI:', error);
+        res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+};
+
 module.exports = {
     login,
-    register
+    register,
+    getUserByDNI
 };

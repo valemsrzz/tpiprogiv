@@ -1,15 +1,18 @@
-// Cargar usuarios pendientes
+// Función para cargar usuarios pendientes de aprobación
 async function loadPendingUsers() {
     try {
+        // Realiza una petición al servidor para obtener usuarios pendientes
         const response = await fetch('/api/users/pending', {
             method: 'GET',
-            credentials: 'include'
+            credentials: 'include'  // Incluye las cookies de sesión
         });
         const data = await response.json();
 
+        // Obtiene la referencia a la lista de usuarios pendientes y la limpia
         const pendingList = document.getElementById('pendingList');
         pendingList.innerHTML = '';
 
+        // Por cada usuario pendiente, crea una fila en la tabla
         data.users.forEach(user => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -25,13 +28,14 @@ async function loadPendingUsers() {
             pendingList.appendChild(row);
         });
     } catch (error) {
-        console.error('Error loading pending users:', error);
+        console.error('Error al cargar usuarios pendientes:', error);
     }
 }
 
-// Aprobar usuario
+// Función para aprobar un usuario
 async function approveUser(userId) {
     try {
+        // Envía petición para aprobar el usuario
         const response = await fetch(`/api/users/approve/${userId}`, {
             method: 'POST',
             credentials: 'include'
@@ -40,18 +44,20 @@ async function approveUser(userId) {
 
         if (data.success) {
             alert('Usuario aprobado exitosamente');
+            // Recarga las listas de usuarios
             loadPendingUsers();
             loadAllUsers();
         }
     } catch (error) {
-        console.error('Error approving user:', error);
+        console.error('Error al aprobar usuario:', error);
     }
 }
 
-// Eliminar usuario
+// Función para eliminar un usuario
 async function deleteUser(userId) {
     if (confirm('¿Está seguro de rechazar este usuario?')) {
         try {
+            // Envía petición para eliminar el usuario
             const response = await fetch(`/api/users/${userId}`, {
                 method: 'DELETE',
                 credentials: 'include'
@@ -60,17 +66,19 @@ async function deleteUser(userId) {
 
             if (data.success) {
                 alert('Usuario rechazado');
+                // Recarga las listas de usuarios
                 loadPendingUsers();
                 loadAllUsers();
             }
         } catch (error) {
-            console.error('Error deleting user:', error);
+            console.error('Error al eliminar usuario:', error);
         }
     }
 }
 
-// Agregar nuevo usuario manualmente
+// Event listener para el botón de agregar usuario
 document.getElementById('addUserBtn').addEventListener('click', async () => {
+    // Recopila los datos del formulario
     const userData = {
         nombre: document.getElementById('nombre').value,
         apellido: document.getElementById('apellido').value,
@@ -83,6 +91,7 @@ document.getElementById('addUserBtn').addEventListener('click', async () => {
     };
 
     try {
+        // Envía petición para crear nuevo usuario
         const response = await fetch('/api/users/create/admin', {
             method: 'POST',
             headers: {
@@ -97,26 +106,28 @@ document.getElementById('addUserBtn').addEventListener('click', async () => {
         if (data.success) {
             alert('Usuario creado exitosamente');
             loadAllUsers();
-            // Limpiar formulario
+            // Limpia el formulario
             document.querySelectorAll('.add-user-form input').forEach(input => input.value = '');
             document.getElementById('rol').value = '';
         } else {
             alert(data.error || 'Error al crear usuario');
         }
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error al crear usuario:', error);
     }
 });
 
-// Cargar todos los usuarios
+// Función para cargar todos los usuarios
 async function loadAllUsers() {
     try {
+        // Obtiene todos los usuarios del sistema
         const response = await fetch('/api/users', {
             method: 'GET',
             credentials: 'include'
         });
         const data = await response.json();
 
+        // Actualiza la lista de usuarios en la interfaz
         const userList = document.getElementById('userList');
         userList.innerHTML = '';
 
@@ -134,16 +145,16 @@ async function loadAllUsers() {
             userList.appendChild(row);
         });
     } catch (error) {
-        console.error('Error loading users:', error);
+        console.error('Error al cargar usuarios:', error);
     }
 }
 
-
-// At the start of the file
+// Función para verificar el acceso de administrador
 async function checkAdminAccess() {
     try {
+        // Verifica si el usuario tiene permisos de administrador
         const response = await fetch('/api/users', {
-            credentials: 'include',  
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -152,22 +163,22 @@ async function checkAdminAccess() {
             window.location.href = '/login.html';
         }
     } catch (error) {
-        console.error('Error checking admin access:', error);
+        console.error('Error al verificar acceso de administrador:', error);
         window.location.href = '/login.html';
     }
 }
 
-// Add to DOMContentLoaded
+// Event listener cuando se carga el documento
 document.addEventListener('DOMContentLoaded', () => {
     checkAdminAccess();
     loadPendingUsers();
     loadAllUsers();
 });
 
-
-// Add these new functions for handling pending users
+// Función para cargar usuarios pendientes (versión alternativa)
 async function cargarUsuariosPendientes() {
     try {
+        // Obtiene usuarios pendientes usando token de autorización
         const response = await fetch('http://localhost:3000/api/admin/pending-users', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -180,6 +191,7 @@ async function cargarUsuariosPendientes() {
     }
 }
 
+// Función para mostrar usuarios pendientes en la tabla
 function mostrarUsuariosPendientes(usuarios) {
     const tbody = document.querySelector('#tablaPendientes tbody');
     tbody.innerHTML = '';
@@ -199,8 +211,10 @@ function mostrarUsuariosPendientes(usuarios) {
     });
 }
 
+// Función para aprobar un usuario pendiente
 async function aprobarUsuario(userId) {
     try {
+        // Envía petición para aprobar usuario usando token
         const response = await fetch(`http://localhost:3000/api/admin/approve-user/${userId}`, {
             method: 'PUT',
             headers: {
@@ -210,9 +224,9 @@ async function aprobarUsuario(userId) {
 
         if (response.ok) {
             alert('Usuario aprobado exitosamente');
-            // Recargar ambas tablas
+            // Recarga las tablas
             cargarUsuariosPendientes();
-            cargarUsuarios(); // Asumiendo que ya tienes esta función para usuarios activos
+            cargarUsuarios();
         }
     } catch (error) {
         console.error('Error al aprobar usuario:', error);
@@ -220,7 +234,7 @@ async function aprobarUsuario(userId) {
     }
 }
 
-// Add this to your DOMContentLoaded event listener
+// Event listener adicional para cargar usuarios pendientes
 document.addEventListener('DOMContentLoaded', function() {
     cargarUsuariosPendientes();
 });

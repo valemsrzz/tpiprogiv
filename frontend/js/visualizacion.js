@@ -1,81 +1,111 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Intentar obtener el DNI de la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    let userDNI = urlParams.get('dni');
-    
-    console.log('DNI obtenido de la URL:', userDNI);
-    
-    // Si no hay DNI en la URL, intentar obtenerlo del localStorage como respaldo
-    if (!userDNI) {
-        userDNI = localStorage.getItem('userDNI');
-        console.log('DNI obtenido del localStorage:', userDNI);
-    }
-    
-    if (!userDNI) {
-        console.log('No se encontró DNI, redirigiendo a login');
-        window.location.href = 'login.html';
-        return;
-    }
+// Agrega un event listener que se ejecuta cuando el DOM está completamente cargado
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Verifica si hay una sesión activa haciendo una petición al servidor
+        const response = await fetch('http://localhost:3000/api/auth/check', {
+            credentials: 'include',  // Incluye las cookies de sesión
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-    // Verificar la ruta correcta de la API
-    loadStudentInfo(userDNI);
-    loadGrades(userDNI);
+        // Si no hay una sesión válida, redirige al login
+        if (!response.ok) {
+            console.log('No hay sesión activa, redirigiendo a login');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Obtiene los datos del usuario de la respuesta
+        const userData = await response.json();
+        console.log('Datos del usuario:', userData);
+
+        // Si el usuario está autenticado y tiene datos, carga su información
+        if (userData.authenticated && userData.user) {
+            loadStudentInfo(userData.user.dni);
+        } else {
+            console.error('Datos de usuario incompletos:', userData);
+            window.location.href = 'login.html';
+        }
+    } catch (error) {
+        console.error('Error al obtener información del usuario:', error);
+        window.location.href = 'login.html';
+    }
 });
 
+// Función para cargar la información del estudiante usando su DNI
 async function loadStudentInfo(userDNI) {
     try {
-        // Usar la ruta correcta para obtener información del alumno
-        const response = await fetch(`http://localhost:3000/api/estudiantes/${userDNI}`);
+        console.log('Cargando información para DNI:', userDNI);
+        
+        // Hace una petición para obtener las calificaciones del alumno
+        const response = await fetch(`http://localhost:3000/api/calificaciones/alumno/${userDNI}`, {
+            credentials: 'include'
+        });
         
         if (!response.ok) {
-            console.error('Error al cargar datos del alumno:', response.status);
-            return;
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
+        console.log('Datos recibidos del servidor:', data);
         
-        document.getElementById('studentName').textContent = `${data.nombre} ${data.apellido}`;
-        document.getElementById('studentClass').textContent = data.curso;
-    } catch (error) {
-        console.error('Error cargando información del estudiante:', error);
-    }
-}
-
-async function loadGrades(userDNI) {
-    try {
-        // Usar la ruta correcta para obtener calificaciones
-        const response = await fetch(`http://localhost:3000/api/notas/estudiante/${userDNI}`);
-        
-        if (!response.ok) {
-            console.error('Error al cargar calificaciones:', response.status);
-            return;
+        // Verifica que existan datos del alumno
+        if (!data.alumno) {
+            throw new Error('No se recibieron datos del alumno');
         }
         
-        const data = await response.json();
-        updateGradesTable(data);
+        // Actualiza la información del alumno en la página
+        actualizarInformacionAlumno(data.alumno);
+        
+        // Si hay calificaciones, actualiza la tabla
+        if (data.calificaciones) {
+            updateGradesTable(data.calificaciones);
+        } else {
+            console.warn('No se recibieron calificaciones');
+        }
     } catch (error) {
-        console.error('Error cargando calificaciones:', error);
+        console.error('Error al cargar datos del alumno:', error);
     }
 }
 
+// Función para actualizar la información básica del alumno en la página
+function actualizarInformacionAlumno(alumno) {
+    const nameElement = document.getElementById('studentName');
+    const classElement = document.getElementById('studentClass');
+    
+    if (nameElement) {
+        // Construye el nombre completo verificando que existan nombre y apellido
+        const nombreCompleto = [
+            alumno.nombre || '',
+            alumno.apellido || ''
+        ].filter(Boolean).join(' ');
+        
+        nameElement.textContent = nombreCompleto || 'Nombre no disponible';
+    } else {
+        console.error('Error: Elemento studentName no encontrado');
+    }
+    
+    if (classElement) {
+        // Muestra el curso si existe
+        classElement.textContent = alumno.curso ? `${alumno.curso}` : 'Curso no disponible';
+    } else {
+        console.error('Error: Elemento studentClass no encontrado');
+    }
+}
+
+// Función para actualizar la tabla de calificaciones
 function updateGradesTable(calificaciones) {
+    // Recorre cada calificación recibida
     calificaciones.forEach(calificacion => {
+        // Busca la fila correspondiente a la materia
         const row = document.querySelector(`tr[data-materia-id="${calificacion.id_materia}"]`);
         if (row) {
-            const cells = {
-                'primer_informe1': calificacion.primer_informe1,
-                'primer_informe2': calificacion.primer_informe2,
-                'primer_final': calificacion.primer_final,
-                'segundo_informe1': calificacion.segundo_informe1,
-                'segundo_informe2': calificacion.segundo_informe2,
-                'segundo_final': calificacion.segundo_final
-            };
-
-            Object.entries(cells).forEach(([type, value]) => {
-                const cell = row.querySelector(`[data-type="${type}"]`);
-                if (cell) {
-                    cell.textContent = value || '-';
-                }
+            // Actualiza cada celda de calificación en la fila
+            const celdas = row.querySelectorAll('td[data-type]');
+            celdas.forEach(celda => {
+                const tipo = celda.getAttribute('data-type');
+                celda.textContent = calificacion[tipo] || '-';
             });
         }
     });
