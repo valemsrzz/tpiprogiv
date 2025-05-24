@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avisos - Colegio Provincial Dr. Ernesto Guevara</title>
+    <link rel="stylesheet" href="avisos.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@400;500;700;800&display=swap');
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="img/logoguevara.png" alt="logo del colegio">
+            <h2 class="nombre-colegio">Colegio Prov. Dr.Ernesto Guevara </h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="inicio-alumno.html" class="nav-link">Inicio</a></li>
+                <li><a href="#" class="nav-link">Calendario</a></li>
+                <li><a href="#" class="logout-btn" onclick="handleLogout(event)">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="avisos-container">
+        <h1>Avisos y Notificaciones</h1>
+        
+        <div class="filtros-avisos">
+            <button class="filtro-btn activo" data-filtro="todos">Todos</button>
+            <button class="filtro-btn" data-filtro="importantes">Importantes</button>
+            <button class="filtro-btn" data-filtro="eventos">Eventos</button>
+            <button class="filtro-btn" data-filtro="academicos">Académicos</button>
+        </div>
+
+        <section class="avisos-grid">
+            <!-- Los avisos se cargarán dinámicamente aquí -->
+        </section>
+    </main>
+
+    <template id="aviso-template">
+        <article class="aviso-card">
+            <div class="aviso-header">
+                <span class="aviso-fecha"></span>
+                <span class="aviso-categoria"></span>
+            </div>
+            <h3 class="aviso-titulo"></h3>
+            <p class="aviso-descripcion"></p>
+            <div class="aviso-footer">
+                <span class="aviso-autor"></span>
+                <button class="ver-mas-btn">Ver más</button>
+            </div>
+        </article>
+    </template>
+
+    <script src="js/auth.js"></script>
+    <script src="js/avisos.js"></script>
+</body>
+</html>

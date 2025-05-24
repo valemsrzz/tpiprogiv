@@ -1,3 +1,13 @@
+import { handleLogout } from './auth.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.querySelector('#logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', handleLogout);
+    }
+
+});
+
 // Función para cargar usuarios pendientes de aprobación
 async function loadPendingUsers() {
     try {

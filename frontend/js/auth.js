@@ -71,3 +71,5 @@ function handleLogout(event) {
         window.location.href = 'login.html';
     }, 1500);
 }
+
+export { handleLogin, handleLogout };

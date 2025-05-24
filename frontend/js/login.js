@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     // Redirige a diferentes páginas según el rol del usuario
                     if (data.role === 'alumno') {
-                        window.location.href = 'vistaalumn.html';  // Página para alumnos
+                        window.location.href = 'inicio-alumno.html';  // Página para alumnos
                     } else if (data.role === 'profesor') {
                         window.location.href = 'inicio-profesor.html';  // Página para profesores
                     } else if (data.role === 'admin' || data.role === 'administrador') { 

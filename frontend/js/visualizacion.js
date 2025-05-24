@@ -1,3 +1,13 @@
+import { handleLogout } from './auth.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.querySelector('#logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', handleLogout);
+    }
+
+});
+
 // Agrega un event listener que se ejecuta cuando el DOM está completamente cargado
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -40,7 +50,10 @@ async function loadStudentInfo(userDNI) {
         
         // Hace una petición para obtener las calificaciones del alumno
         const response = await fetch(`http://localhost:3000/api/calificaciones/alumno/${userDNI}`, {
-            credentials: 'include'
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
         });
         
         if (!response.ok) {

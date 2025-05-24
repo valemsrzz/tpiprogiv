@@ -1,5 +1,14 @@
 // Importamos la función de notificación desde el archivo de utilidades
 import { showNotification } from './utils.js';
+import { handleLogout } from './auth.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.querySelector('#logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', handleLogout);
+    }
+
+});
 
 // Cuando el DOM está completamente cargado, inicializamos la aplicación
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,0 +1,189 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", serif;
+    list-style: none;
+}
+
+body {
+    background: linear-gradient(150deg, #961f1f, #262626);
+    color: white;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, rgb(36, 35, 35)0%, rgb(26, 25, 25)100%);
+    color: white;
+    padding: 5px;
+    font-size: 75%;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 15px;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fbfafa;
+    font-size: 125%;
+    font-weight: 600;
+    padding: 8px 10px;
+}
+
+nav a:hover {
+    color: #b43232;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 5rem;
+    margin-right: 5%;
+}
+
+/* Contenedor principal de avisos */
+.avisos-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.avisos-container h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: #ffffff;
+}
+
+/* Filtros */
+.filtros-avisos {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.filtro-btn {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filtro-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.filtro-btn.activo {
+    background: #b43232;
+}
+
+/* Grid de avisos */
+.avisos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+/* Tarjetas de avisos */
+.aviso-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.aviso-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.aviso-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.aviso-fecha {
+    font-size: 0.9rem;
+    color: #cccccc;
+}
+
+.aviso-categoria {
+    background: #b43232;
+    padding: 0.2rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+.aviso-titulo {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.aviso-descripcion {
+    color: #cccccc;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.aviso-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.aviso-autor {
+    font-size: 0.9rem;
+    color: #cccccc;
+}
+
+.ver-mas-btn {
+    background: transparent;
+    border: 1px solid #b43232;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ver-mas-btn:hover {
+    background: #b43232;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filtros-avisos {
+        flex-wrap: wrap;
+    }
+
+    .avisos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .aviso-card {
+        margin-bottom: 1rem;
+    }
+}

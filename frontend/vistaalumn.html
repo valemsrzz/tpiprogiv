@@ -17,7 +17,7 @@
                 <li><a href="inicio-alumno.html" class="nav-link">Inicio</a></li>
                 <li><a href="#" class="nav-link">Avisos</a></li>
                 <li><a href="#" class="nav-link">Calendario</a></li>
-                <li><a href="#" class="logout-btn" onclick="handleLogout(event)">Cerrar Sesión</a></li>
+                <li><a href="#" class="logout-btn" id="logoutButton">Cerrar Sesión</a></li>
             </ul>
         </nav>
     </header>
@@ -34,9 +34,7 @@
             <span id="studentClass" class="info-value"></span>
         </div>
     </div>
-
     <section id="boletin">
-        <h3>Calificaciones por Materia</h3>
         <table>
             <thead>
                 <tr>
@@ -153,9 +151,8 @@
             <p>© 2024 Impacto Digital. Todos los derechos reservados.</p>
         </div>
     </footer>
-    
-    <script src="js/visualizacion.js"></script>
-    <script src="js/auth.js"></script>
-    <script type="module" src="js/auth.js"></script>
+    <!-- Cambiar esta línea: -->
+    <script src="js/utils.js" type="module"></script>
+    <script src="js/visualizacion.js" type="module"></script>
 </body>
 </html>
