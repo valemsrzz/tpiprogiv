@@ -135,14 +135,12 @@ document.getElementById('addUserBtn').addEventListener('click', async () => {
 // Función para cargar todos los usuarios
 async function loadAllUsers() {
     try {
-        // Obtiene todos los usuarios del sistema
         const response = await fetch('/api/users', {
             method: 'GET',
             credentials: 'include'
         });
         const data = await response.json();
 
-        // Actualiza la lista de usuarios en la interfaz
         const userList = document.getElementById('userList');
         userList.innerHTML = '';
 
@@ -154,9 +152,14 @@ async function loadAllUsers() {
                 <td>${user.id_curso || 'No asignado'}</td>
                 <td>${user.rol}</td>
                 <td>
-                    <button onclick="deleteUser(${user.id})" class="delete-btn">Eliminar</button>
+                    <button class="delete-btn" data-userid="${user.id}">Eliminar</button>
                 </td>
             `;
+            
+            // Agregar event listener al botón de eliminar
+            const deleteBtn = row.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', () => deleteUser(user.id));
+            
             userList.appendChild(row);
         });
     } catch (error) {
