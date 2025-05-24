@@ -1,5 +1,5 @@
 // Importar la función de notificación
-import { showNotification } from './notifications.js';
+import { showNotification } from './utils.js';
 
 // Agregar un event listener al formulario de registro cuando se envía
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
