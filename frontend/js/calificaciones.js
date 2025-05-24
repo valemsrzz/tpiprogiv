@@ -1,3 +1,14 @@
+import { handleLogout } from './auth.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.querySelector('#logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', handleLogout);
+    }
+
+});
+
+
 // Verifica la autenticación del usuario cuando se carga la página
 document.addEventListener('DOMContentLoaded', async function() {
     try {
