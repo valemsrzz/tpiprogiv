@@ -11,18 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
 // Función para cargar usuarios pendientes de aprobación
 async function loadPendingUsers() {
     try {
-        // Realiza una petición al servidor para obtener usuarios pendientes
         const response = await fetch('/api/users/pending', {
             method: 'GET',
-            credentials: 'include'  // Incluye las cookies de sesión
+            credentials: 'include'
         });
         const data = await response.json();
 
-        // Obtiene la referencia a la lista de usuarios pendientes y la limpia
         const pendingList = document.getElementById('pendingList');
         pendingList.innerHTML = '';
 
-        // Por cada usuario pendiente, crea una fila en la tabla
         data.users.forEach(user => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -31,10 +28,18 @@ async function loadPendingUsers() {
                 <td>${user.dni}</td>
                 <td>${user.id_curso || 'No asignado'}</td>
                 <td>
-                    <button onclick="approveUser(${user.id})" class="approve-btn">Aprobar</button>
-                    <button onclick="deleteUser(${user.id})" class="reject-btn">Rechazar</button>
+                    <button class="approve-btn" data-userid="${user.id}">Aprobar</button>
+                    <button class="reject-btn" data-userid="${user.id}">Rechazar</button>
                 </td>
             `;
+            
+            // Agregar event listeners a los botones
+            const approveBtn = row.querySelector('.approve-btn');
+            const rejectBtn = row.querySelector('.reject-btn');
+            
+            approveBtn.addEventListener('click', () => approveUser(user.id));
+            rejectBtn.addEventListener('click', () => deleteUser(user.id));
+            
             pendingList.appendChild(row);
         });
     } catch (error) {
