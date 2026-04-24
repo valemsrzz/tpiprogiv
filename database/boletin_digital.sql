@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-05-2025 a las 00:49:18
+-- Tiempo de generación: 11-09-2025 a las 00:26:12
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -38,6 +38,17 @@ CREATE TABLE `calificaciones` (
   `segundo_informe2` int(2) DEFAULT NULL,
   `segundo_final` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `calificaciones`
+--
+
+INSERT INTO `calificaciones` (`id`, `id_alumno`, `id_materia`, `primer_informe1`, `primer_informe2`, `primer_final`, `segundo_informe1`, `segundo_informe2`, `segundo_final`) VALUES
+(1, 32, 1, 9, NULL, NULL, NULL, NULL, NULL),
+(2, 32, 3, NULL, 10, NULL, NULL, NULL, NULL),
+(3, 32, 4, 10, NULL, NULL, NULL, NULL, NULL),
+(4, 32, 6, NULL, 10, NULL, NULL, NULL, NULL),
+(5, 32, 7, 10, 10, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -114,7 +125,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `username`, `password`, `rol`, `estado`, `id_curso`, `created_at`) VALUES
-(9, 'Admin', 'Principal', '12345678', '123456789', 'admin@admin.com', 'admin', '$2b$10$k4pMvMdio2EAYmwq2cckWe/1V8jB5GbLAwvTLjGLGMq7K36Tt.kG2', 'admin', 'activo', NULL, '2025-04-30 20:04:22');
+(9, 'Admin', 'Principal', '12345678', '123456789', 'admin@admin.com', 'admin', '$2b$10$k4pMvMdio2EAYmwq2cckWe/1V8jB5GbLAwvTLjGLGMq7K36Tt.kG2', 'admin', 'activo', NULL, '2025-04-30 20:04:22'),
+(32, 'Giovanni Pauletto', '', '46437865', '2964402824', 'amordemivida@gmail.com', 'esposodevalen123', '$2b$10$efEnLEcimxk9mlLgtG83tOeB3HjJ1R.GwALiCjNM8a2F./RUY9L9G', 'alumno', 'activo', 2, '2025-05-24 14:28:51'),
+(34, 'Matias', 'Ferandez', '32985647', '2964500247', 'matiasfernandezgmail.com', 'Matias_fernandez', '$2b$10$nz1fyaRXu21hKe2TB/JuPuN31geI2RX2qzQMm0xxWtmBT8Dto2wRu', 'profesor', 'activo', NULL, '2025-05-24 14:41:25');
 
 --
 -- Índices para tablas volcadas
@@ -159,7 +172,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `calificaciones`
 --
 ALTER TABLE `calificaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `cursos`
@@ -177,7 +190,7 @@ ALTER TABLE `materias`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Restricciones para tablas volcadas

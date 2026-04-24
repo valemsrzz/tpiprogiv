@@ -68,10 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 showNotification('success', 'Alumno encontrado exitosamente');
             }
             
-            // Rellenamos las calificaciones si existen
-            if (data.calificaciones && data.calificaciones.length > 0) {
-                fillExistingGrades(data.calificaciones);
-            } else {
+            // Siempre limpiamos y actualizamos las calificaciones (tenga notas o no)
+            // Si no tiene notas, fillExistingGrades recibirá un array vacío y solo limpiará el formulario
+            fillExistingGrades(data.calificaciones || []);
+
+            if (!data.calificaciones || data.calificaciones.length === 0) {
                 showNotification('info', 'No se encontraron calificaciones para este alumno');
             }
             
@@ -87,8 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Función para rellenar las calificaciones existentes en el formulario
 function fillExistingGrades(calificaciones) {
-    // Limpiamos todos los campos de notas
-    document.querySelectorAll('input[type="number"]').forEach(input => input.value = '');
+    // Limpiamos todos los campos de notas, excluyendo el campo DNI para no borrar la búsqueda
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        if (input.id !== 'dni') {
+            input.value = '';
+        }
+    });
 
     // Rellenamos cada calificación en su campo correspondiente
     calificaciones.forEach(calificacion => {
@@ -229,11 +234,11 @@ async function saveGrades() {
                 // Procesamos cada calificación
                 for (const cal of calificaciones) {
                     const input = document.getElementById(cal.elemento);
-                    if (input && input.value && !input.readOnly) {
-                        const valor = parseFloat(input.value);
+                    if (input && !input.readOnly) {
+                        let valor = input.value === "" ? null : parseFloat(input.value);
                         
-                        // Validamos y guardamos la nota
-                        if (valor >= 1 && valor <= 10) {
+                        // Validamos y guardamos la nota (permitimos null para borrar)
+                        if (valor === null || (valor >= 1 && valor <= 10)) {
                             const response = await fetch('http://localhost:3000/api/calificaciones/actualizar', {
                                 method: 'POST',
                                 credentials: 'include',
@@ -244,7 +249,7 @@ async function saveGrades() {
                                     id_alumno,
                                     id_materia,
                                     tipo: cal.tipo,
-                                    valor
+                                    valor: valor // Enviamos null si se borró
                                 })
                             });
 

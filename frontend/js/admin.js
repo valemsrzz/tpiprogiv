@@ -1,12 +1,50 @@
 import { handleLogout } from './auth.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+// Inicialización centralizada
+document.addEventListener('DOMContentLoaded', init);
+
+function init() {
+    console.log('Iniciando panel de administración...');
+
+    // 1. Configurar Logout
     const logoutButton = document.querySelector('#logoutButton');
     if (logoutButton) {
         logoutButton.addEventListener('click', handleLogout);
     }
 
-});
+    // 2. Configurar Buscador
+    const searchInput = document.getElementById('searchUser');
+    if (searchInput) {
+        console.log('Buscador configurado correctamente');
+        searchInput.addEventListener('input', handleSearch);
+    } else {
+        console.error('ERROR: No se encontró el input #searchUser');
+    }
+
+    // 3. Cargar datos iniciales
+    checkAdminAccess();
+    loadPendingUsers();
+    loadAllUsers();
+}
+
+// Función de búsqueda
+function handleSearch(e) {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    console.log('Buscando:', searchTerm);
+
+    const filteredUsers = allUsers.filter(user => {
+        const nombre = (user.nombre || '').toLowerCase();
+        const apellido = (user.apellido || '').toLowerCase();
+        const username = (user.username || '').toLowerCase();
+        
+        return nombre.includes(searchTerm) || 
+               apellido.includes(searchTerm) || 
+               username.includes(searchTerm);
+    });
+
+    console.log(`Encontrados: ${filteredUsers.length} usuarios`);
+    renderUsers(filteredUsers);
+}
 
 // Función para cargar usuarios pendientes de aprobación
 async function loadPendingUsers() {
@@ -22,8 +60,9 @@ async function loadPendingUsers() {
 
         data.users.forEach(user => {
             const row = document.createElement('tr');
+            // CORRECCIÓN: Mostramos nombre_completo en lugar de solo nombre
             row.innerHTML = `
-                <td>${user.nombre}</td>
+                <td>${user.nombre_completo}</td>
                 <td>${user.email}</td>
                 <td>${user.dni}</td>
                 <td>${user.id_curso || 'No asignado'}</td>
@@ -95,8 +134,7 @@ async function deleteUser(userId) {
 document.getElementById('addUserBtn').addEventListener('click', async () => {
     // Recopila los datos del formulario
     const userData = {
-        nombre: document.getElementById('nombre').value,
-        apellido: document.getElementById('apellido').value,
+        nombre_completo: document.getElementById('nombre_completo').value,
         dni: document.getElementById('dni').value,
         telefono: document.getElementById('telefono').value,
         username: document.getElementById('username').value,
@@ -132,6 +170,9 @@ document.getElementById('addUserBtn').addEventListener('click', async () => {
     }
 });
 
+// Variable global para almacenar los usuarios cargados
+let allUsers = [];
+
 // Función para cargar todos los usuarios
 async function loadAllUsers() {
     try {
@@ -140,31 +181,57 @@ async function loadAllUsers() {
             credentials: 'include'
         });
         const data = await response.json();
+        
+        console.log('Datos de usuarios recibidos:', data); // Para depuración
 
-        const userList = document.getElementById('userList');
-        userList.innerHTML = '';
+        // Guardamos todos los usuarios en la variable global
+        allUsers = data.users || [];
+        // Renderizamos la lista completa inicialmente
+        renderUsers(allUsers);
 
-        data.users.forEach(user => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${user.nombre} ${user.apellido || ''}</td>
-                <td>${user.username}</td>
-                <td>${user.id_curso || 'No asignado'}</td>
-                <td>${user.rol}</td>
-                <td>
-                    <button class="delete-btn" data-userid="${user.id}">Eliminar</button>
-                </td>
-            `;
-            
-            // Agregar event listener al botón de eliminar
-            const deleteBtn = row.querySelector('.delete-btn');
-            deleteBtn.addEventListener('click', () => deleteUser(user.id));
-            
-            userList.appendChild(row);
-        });
     } catch (error) {
         console.error('Error al cargar usuarios:', error);
     }
+}
+
+// Función para renderizar la tabla de usuarios
+function renderUsers(usersToRender) {
+    const userList = document.getElementById('userList');
+    if (!userList) return;
+
+    userList.innerHTML = '';
+
+    if (!usersToRender || usersToRender.length === 0) {
+        userList.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No se encontraron usuarios</td></tr>';
+        return;
+    }
+
+    usersToRender.forEach(user => {
+        // MEJORA VISUAL: Priorizamos Nombre y Apellido. Si no existen, mostramos el username limpio.
+        const nombre_completo = user.nombre_completo || ''; 
+        
+        // Si hay nombre O apellido, los mostramos. Si no, mostramos el username tal cual.
+        let nombre_completoMostrar = (nombre_completo) ? `${nombre_completo}`.trim() : user.username;
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${nombre_completoMostrar}</td>
+            <td>${user.username || 'Desconocido'}</td>
+            <td>${user.id_curso || 'No asignado'}</td>
+            <td>${user.rol || 'Sin rol'}</td>
+            <td>
+                <button class="delete-btn" data-userid="${user.id}">Eliminar</button>
+            </td>
+        `;
+        
+        // Agregar event listener al botón de eliminar
+        const deleteBtn = row.querySelector('.delete-btn');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => deleteUser(user.id));
+        }
+        
+        userList.appendChild(row);
+    });
 }
 
 // Función para verificar el acceso de administrador
@@ -185,74 +252,3 @@ async function checkAdminAccess() {
         window.location.href = '/login.html';
     }
 }
-
-// Event listener cuando se carga el documento
-document.addEventListener('DOMContentLoaded', () => {
-    checkAdminAccess();
-    loadPendingUsers();
-    loadAllUsers();
-});
-
-// Función para cargar usuarios pendientes (versión alternativa)
-async function cargarUsuariosPendientes() {
-    try {
-        // Obtiene usuarios pendientes usando token de autorización
-        const response = await fetch('http://localhost:3000/api/admin/pending-users', {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-        const usuarios = await response.json();
-        mostrarUsuariosPendientes(usuarios);
-    } catch (error) {
-        console.error('Error al cargar usuarios pendientes:', error);
-    }
-}
-
-// Función para mostrar usuarios pendientes en la tabla
-function mostrarUsuariosPendientes(usuarios) {
-    const tbody = document.querySelector('#tablaPendientes tbody');
-    tbody.innerHTML = '';
-
-    usuarios.forEach(usuario => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${usuario.apellido}, ${usuario.nombre}</td>
-            <td>${usuario.email}</td>
-            <td>${usuario.username}</td>
-            <td>
-                <button onclick="aprobarUsuario(${usuario.id})" class="btn-aprobar">Aprobar</button>
-                <button onclick="rechazarUsuario(${usuario.id})" class="btn-rechazar">Rechazar</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// Función para aprobar un usuario pendiente
-async function aprobarUsuario(userId) {
-    try {
-        // Envía petición para aprobar usuario usando token
-        const response = await fetch(`http://localhost:3000/api/admin/approve-user/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-
-        if (response.ok) {
-            alert('Usuario aprobado exitosamente');
-            // Recarga las tablas
-            cargarUsuariosPendientes();
-            cargarUsuarios();
-        }
-    } catch (error) {
-        console.error('Error al aprobar usuario:', error);
-        alert('Error al aprobar usuario');
-    }
-}
-
-// Event listener adicional para cargar usuarios pendientes
-document.addEventListener('DOMContentLoaded', function() {
-    cargarUsuariosPendientes();
-});

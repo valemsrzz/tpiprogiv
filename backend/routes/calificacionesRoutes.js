@@ -104,9 +104,12 @@ router.post('/actualizar', async (req, res) => {
         }
 
         // Validamos el valor de la calificación
-        const valorNumerico = parseFloat(valor);
-        if (isNaN(valorNumerico) || valorNumerico < 1 || valorNumerico > 10) {
-            return res.status(400).json({ error: 'La calificación debe estar entre 1 y 10' });
+        let valorNumerico = null;
+        if (valor !== null && valor !== '') {
+            valorNumerico = parseFloat(valor);
+            if (isNaN(valorNumerico) || valorNumerico < 1 || valorNumerico > 10) {
+                return res.status(400).json({ error: 'La calificación debe estar entre 1 y 10' });
+            }
         }
 
         // Verificamos si existe el registro

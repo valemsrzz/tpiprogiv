@@ -75,6 +75,9 @@ router.post('/create', register);
 router.delete('/:id', adminMiddleware, async (req, res) => {
     const userId = req.params.id;
     try {
+        // Primero eliminar calificaciones asociadas al usuario
+        await db.promise().query('DELETE FROM calificaciones WHERE id_alumno = ?', [userId]);
+
         // Intentamos eliminar el usuario
         const [result] = await db.promise().query('DELETE FROM usuarios WHERE id = ?', [userId]);
         // Verificamos si se eliminó algún usuario

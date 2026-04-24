@@ -1,19 +1,19 @@
-// Importación de módulos necesarios para el servidor
-const express = require('express');
-const app = express();
-const path = require('path');
-const session = require('express-session');
-const cors = require('cors');
-const db = require('./db');
+// Importamos los módulos esenciales
+const express = require('express');  // Framework web para Node.js
+const app = express();              // Creamos la instancia de la aplicación
+const path = require('path');        // Utilidad para manejar rutas de archivos
+const session = require('express-session');  // Manejo de sesiones de usuario
+const cors = require('cors');        // Middleware para permitir peticiones entre dominios
+const db = require('./db');          // Nuestra configuración de base de datos
 
-// Definición de variables de entorno
-const PORT = process.env.PORT || 3000;        // Puerto del servidor
-const NODE_ENV = process.env.NODE_ENV || 'development';    // Entorno de desarrollo
+// Variables de entorno con valores por defecto
+const PORT = process.env.PORT || 3000;        // Puerto configurable
+const NODE_ENV = process.env.NODE_ENV || 'development';    // Entorno actual
 
-// Configuración de middleware para CORS (Cross-Origin Resource Sharing)
+// Configuración CORS detallada
 app.use(cors({
-    origin: 'http://localhost:3000', // Origen permitido para las peticiones
-    credentials: true // Habilita el envío de cookies y credenciales
+    origin: 'http://localhost:3000', // Solo permite peticiones desde este origen
+    credentials: true // Necesario para enviar cookies y headers de autenticación
 }));
 
 // Middleware para procesar datos JSON y formularios
